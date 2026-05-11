@@ -198,6 +198,23 @@
             z-index: 10;
             border-radius: 32px;
         }
+
+        /* ─── 이용약관 모달 스크롤 ─── */
+        #terms-modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        #terms-modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        #terms-modal-body::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        #terms-modal-body::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -215,34 +232,23 @@
                     </div>
                     <button class="google-btn" onclick="startGoogleLogin()">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                                fill="#4285F4" />
-                            <path
-                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                                fill="#34A853" />
-                            <path
-                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                                fill="#FBBC05" />
-                            <path
-                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                                fill="#EA4335" />
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                         </svg>
                         Google 계정으로 로그인
                     </button>
                 </div>
-                <div id="banner-logged-in"
-                    class="hidden flex-col sm:flex-row items-center gap-4 w-full justify-between">
+                <div id="banner-logged-in" class="hidden flex-col sm:flex-row items-center gap-4 w-full justify-between">
                     <div class="text-white flex items-center gap-3">
-                        <img id="user-avatar" src="" alt="프로필"
-                            class="w-8 h-8 rounded-full border-2 border-white/30 hidden">
+                        <img id="user-avatar" src="" alt="프로필" class="w-8 h-8 rounded-full border-2 border-white/30 hidden">
                         <div>
                             <p class="font-black text-sm sm:text-base" id="user-greeting">반가워요!</p>
                             <p class="text-blue-200 text-xs font-medium" id="user-email-display"></p>
                         </div>
                     </div>
-                    <button onclick="logoutGoogle()"
-                        class="text-blue-200 hover:text-white text-xs font-bold border border-blue-400/40 px-3 py-1.5 rounded-lg hover:border-white/40 transition-colors">
+                    <button onclick="logoutGoogle()" class="text-blue-200 hover:text-white text-xs font-bold border border-blue-400/40 px-3 py-1.5 rounded-lg hover:border-white/40 transition-colors">
                         로그아웃
                     </button>
                 </div>
@@ -257,28 +263,19 @@
                     </div>
                     <div class="hidden sm:block">
                         <h1 class="text-xl font-black tracking-tighter text-slate-800">대건 신문고</h1>
-                        <p class="text-[9px] font-bold text-blue-600 uppercase tracking-widest">Digital Petition System
-                        </p>
+                        <p class="text-[9px] font-bold text-blue-600 uppercase tracking-widest">Digital Petition System</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-6">
                     <nav class="flex overflow-x-auto no-scrollbar gap-4 sm:gap-6 px-2">
-                        <button type="button" onclick="showSection('home')" id="nav-home"
-                            class="nav-link active font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">홈</button>
-                        <button type="button" onclick="showSection('intro')" id="nav-intro"
-                            class="nav-link font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">소개</button>
-                        <button type="button" onclick="showSection('board')" id="nav-board"
-                            class="nav-link font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">공지/Q&A</button>
-                        <button type="button" onclick="showSection('report')" id="nav-report"
-                            class="nav-link font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">민원신청</button>
-                        <button type="button" onclick="showSection('status')" id="nav-status"
-                            class="nav-link font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">처리현황</button>
-                        <button type="button" onclick="showSection('admin')" id="nav-admin"
-                            class="nav-link font-bold text-sm text-red-600 pb-1 whitespace-nowrap hidden">관리자
-                            페이지</button>
+                        <button type="button" onclick="showSection('home')" id="nav-home" class="nav-link active font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">홈</button>
+                        <button type="button" onclick="showSection('intro')" id="nav-intro" class="nav-link font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">소개</button>
+                        <button type="button" onclick="showSection('board')" id="nav-board" class="nav-link font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">공지/Q&A</button>
+                        <button type="button" onclick="showSection('report')" id="nav-report" class="nav-link font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">민원신청</button>
+                        <button type="button" onclick="showSection('status')" id="nav-status" class="nav-link font-bold text-sm text-slate-600 pb-1 whitespace-nowrap">처리현황</button>
+                        <button type="button" onclick="showSection('admin')" id="nav-admin" class="nav-link font-bold text-sm text-red-600 pb-1 whitespace-nowrap hidden">관리자 페이지</button>
                     </nav>
-                    <button onclick="openAdminLoginModal()"
-                        class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 text-slate-600 hover:text-white hover:bg-slate-800 rounded-lg transition-colors ml-2 font-bold text-sm">
+                    <button onclick="openAdminLoginModal()" class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 text-slate-600 hover:text-white hover:bg-slate-800 rounded-lg transition-colors ml-2 font-bold text-sm">
                         <i data-lucide="lock" class="w-4 h-4"></i>
                         <span class="hidden sm:inline">관리자 접속</span>
                     </button>
@@ -292,36 +289,30 @@
                 <div class="bg-white border-b border-slate-200 py-16 px-4">
                     <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
                         <div class="space-y-6">
-                            <div
-                                class="inline-block bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-black mb-2">
+                            <div class="inline-block bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-black mb-2">
                                 논산대건고등학교 총학생회 운영</div>
                             <h2 class="text-4xl md:text-5xl font-black leading-tight text-slate-900">
                                 학교를 바꾸는<br><span class="text-blue-700">가장 빠른 목소리</span>
                             </h2>
                             <div class="grid grid-cols-3 gap-4 py-6 border-y border-slate-100 my-6">
                                 <div>
-                                    <p class="text-[14px] font-bold text-slate-500 flex items-center gap-1.5 mb-1"><i
-                                            data-lucide="inbox" class="w-4 h-4 text-slate-400"></i> 누적 접수</p>
+                                    <p class="text-[14px] font-bold text-slate-500 flex items-center gap-1.5 mb-1"><i data-lucide="inbox" class="w-4 h-4 text-slate-400"></i> 누적 접수</p>
                                     <p class="text-3xl font-black text-slate-800" id="stat-total">0</p>
                                 </div>
                                 <div>
-                                    <p class="text-[14px] font-bold text-slate-500 flex items-center gap-1.5 mb-1"><i
-                                            data-lucide="rotate-cw" class="w-4 h-4 text-blue-500"></i> 처리 중</p>
+                                    <p class="text-[14px] font-bold text-slate-500 flex items-center gap-1.5 mb-1"><i data-lucide="rotate-cw" class="w-4 h-4 text-blue-500"></i> 처리 중</p>
                                     <p class="text-3xl font-black text-blue-600" id="stat-proc">0</p>
                                 </div>
                                 <div>
-                                    <p class="text-[14px] font-bold text-slate-500 flex items-center gap-1.5 mb-1"><i
-                                            data-lucide="check-circle" class="w-4 h-4 text-green-500"></i> 처리 완료</p>
+                                    <p class="text-[14px] font-bold text-slate-500 flex items-center gap-1.5 mb-1"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i> 처리 완료</p>
                                     <p class="text-3xl font-black text-green-600" id="stat-comp">0</p>
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-4">
-                                <button type="button" onclick="showSection('report')"
-                                    class="bg-blue-700 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-800 transition-all shadow-xl shadow-blue-100 flex items-center gap-2">
+                                <button type="button" onclick="showSection('report')" class="bg-blue-700 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-800 transition-all shadow-xl shadow-blue-100 flex items-center gap-2">
                                     민원 신청하기 <i data-lucide="arrow-right" class="w-5 h-5"></i>
                                 </button>
-                                <button type="button" onclick="showSection('status')"
-                                    class="bg-white border border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition-all flex items-center gap-2">
+                                <button type="button" onclick="showSection('status')" class="bg-white border border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition-all flex items-center gap-2">
                                     <i data-lucide="search" class="w-5 h-5"></i> 처리 결과 조회
                                 </button>
                             </div>
@@ -342,43 +333,33 @@
                             <div class="mb-6"><i data-lucide="scan-dashed" class="w-10 h-10 text-blue-600"></i></div>
                             <h3 class="text-2xl font-black text-slate-900 mb-6">구축 목적</h3>
                             <p class="text-slate-600 leading-relaxed font-medium text-[15px] break-keep">
-                                '대건 신문고'는 비공식적이고 산발적이었던 교내 건의 사항 접수 방식을 일원화하여, 학생들의 의견을 체계적으로 수집하고 <strong
-                                    class="text-slate-900">소관 부서의 책임 있는 조치 및 처리 결과의 투명한 공개</strong>를 도모하기 위해 논산대건고등학교
-                                총학생회에서 구축했어요.
+                                '대건 신문고'는 비공식적이고 산발적이었던 교내 건의 사항 접수 방식을 일원화하여, 학생들의 의견을 체계적으로 수집하고 <strong class="text-slate-900">소관 부서의 책임 있는 조치 및 처리 결과의 투명한 공개</strong>를 도모하기 위해 논산대건고등학교 총학생회에서 구축했어요.
                             </p>
                         </div>
                         <div class="space-y-8 py-4">
                             <div class="flex items-start gap-5">
-                                <div
-                                    class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-black shrink-0">
-                                    1</div>
+                                <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-black shrink-0">1</div>
                                 <div class="pt-1">
                                     <h4 class="text-lg font-black text-slate-900 mb-1">민원 접수</h4>
                                     <p class="text-slate-500 text-[15px] font-medium">시스템을 통한 건의 및 불편 사항 등록</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-5">
-                                <div
-                                    class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-black shrink-0">
-                                    2</div>
+                                <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-black shrink-0">2</div>
                                 <div class="pt-1">
                                     <h4 class="text-lg font-black text-slate-900 mb-1">부서 이관</h4>
                                     <p class="text-slate-500 text-[15px] font-medium">총학생회 검토 후 소관 부서 공식 전달</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-5">
-                                <div
-                                    class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-black shrink-0">
-                                    3</div>
+                                <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-black shrink-0">3</div>
                                 <div class="pt-1">
                                     <h4 class="text-lg font-black text-slate-900 mb-1">검토 및 조치</h4>
                                     <p class="text-slate-500 text-[15px] font-medium">담당 교직원 검토 및 실질적 조치 이행</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-5">
-                                <div
-                                    class="w-14 h-14 rounded-2xl bg-green-100 text-green-700 flex items-center justify-center text-2xl font-black shrink-0">
-                                    4</div>
+                                <div class="w-14 h-14 rounded-2xl bg-green-100 text-green-700 flex items-center justify-center text-2xl font-black shrink-0">4</div>
                                 <div class="pt-1">
                                     <h4 class="text-lg font-black text-slate-900 mb-1">결과 안내</h4>
                                     <p class="text-slate-500 text-[15px] font-medium">현황판을 통한 조치 결과 최종 공지</p>
@@ -397,32 +378,23 @@
                         <p class="text-slate-500 font-medium italic text-[15px]">시스템 이용 규정 및 자주 묻는 질문이에요.</p>
                     </div>
                     <div class="flex bg-slate-100 p-1.5 rounded-xl">
-                        <button id="tab-btn-notice" onclick="switchBoardTab('notice')"
-                            class="tab-btn active px-6 py-2.5 rounded-lg font-bold text-sm transition-all shadow-sm">공지사항</button>
-                        <button id="tab-btn-qna" onclick="switchBoardTab('qna')"
-                            class="tab-btn inactive px-6 py-2.5 rounded-lg font-bold text-sm transition-all hover:text-slate-900">자주
-                            묻는 질문</button>
+                        <button id="tab-btn-notice" onclick="switchBoardTab('notice')" class="tab-btn active px-6 py-2.5 rounded-lg font-bold text-sm transition-all shadow-sm">공지사항</button>
+                        <button id="tab-btn-qna" onclick="switchBoardTab('qna')" class="tab-btn inactive px-6 py-2.5 rounded-lg font-bold text-sm transition-all hover:text-slate-900">자주 묻는 질문</button>
                     </div>
                 </div>
                 <div id="board-notice" class="block animate-fade">
-                    <div id="notice-list-view"
-                        class="bg-white rounded-[20px] border border-slate-200 overflow-hidden shadow-sm"></div>
-                    <div id="notice-detail-view"
-                        class="hidden bg-white rounded-[20px] border border-slate-200 p-8 shadow-sm">
-                        <button onclick="closeNoticeDetail()"
-                            class="flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold text-sm mb-8 transition-colors">
+                    <div id="notice-list-view" class="bg-white rounded-[20px] border border-slate-200 overflow-hidden shadow-sm"></div>
+                    <div id="notice-detail-view" class="hidden bg-white rounded-[20px] border border-slate-200 p-8 shadow-sm">
+                        <button onclick="closeNoticeDetail()" class="flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold text-sm mb-8 transition-colors">
                             <i data-lucide="arrow-left" class="w-4 h-4"></i> 목록으로 돌아가기
                         </button>
                         <div class="mb-6">
-                            <span id="detail-badge"
-                                class="px-3 py-1.5 rounded-lg text-xs font-black mb-4 inline-block">분류</span>
-                            <h3 id="detail-title"
-                                class="text-2xl md:text-3xl font-black text-slate-900 mb-3 tracking-tight">제목</h3>
+                            <span id="detail-badge" class="px-3 py-1.5 rounded-lg text-xs font-black mb-4 inline-block">분류</span>
+                            <h3 id="detail-title" class="text-2xl md:text-3xl font-black text-slate-900 mb-3 tracking-tight">제목</h3>
                             <p id="detail-info" class="text-sm font-medium text-slate-400">날짜 | 작성자</p>
                         </div>
                         <hr class="border-slate-100 my-8">
-                        <div id="detail-content"
-                            class="text-slate-700 leading-relaxed font-medium whitespace-pre-line text-[15px]"></div>
+                        <div id="detail-content" class="text-slate-700 leading-relaxed font-medium whitespace-pre-line text-[15px]"></div>
                     </div>
                 </div>
                 <div id="board-qna" class="hidden animate-fade space-y-4"></div>
@@ -433,20 +405,11 @@
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-black text-slate-900 mb-4 tracking-tight">민원 신청</h2>
                     <div class="flex items-center justify-center gap-4 md:gap-12">
-                        <div class="step-item active flex items-center gap-2 cursor-pointer" id="step1-indic"
-                            onclick="goToStep(1)"><span
-                                class="step-num w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-black">1</span><span
-                                class="step-text text-xs text-slate-400">약관동의</span></div>
+                        <div class="step-item active flex items-center gap-2 cursor-pointer" id="step1-indic" onclick="goToStep(1)"><span class="step-num w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-black">1</span><span class="step-text text-xs text-slate-400">약관동의</span></div>
                         <div class="w-8 h-[2px] bg-slate-200"></div>
-                        <div class="step-item flex items-center gap-2 cursor-pointer" id="step2-indic"
-                            onclick="goToStep(2)"><span
-                                class="step-num w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-black">2</span><span
-                                class="step-text text-xs text-slate-400">정보입력</span></div>
+                        <div class="step-item flex items-center gap-2 cursor-pointer" id="step2-indic" onclick="goToStep(2)"><span class="step-num w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-black">2</span><span class="step-text text-xs text-slate-400">정보입력</span></div>
                         <div class="w-8 h-[2px] bg-slate-200"></div>
-                        <div class="step-item flex items-center gap-2 cursor-pointer" id="step3-indic"
-                            onclick="goToStep(3)"><span
-                                class="step-num w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-black">3</span><span
-                                class="step-text text-xs text-slate-400">신청완료</span></div>
+                        <div class="step-item flex items-center gap-2 cursor-pointer" id="step3-indic" onclick="goToStep(3)"><span class="step-num w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-black">3</span><span class="step-text text-xs text-slate-400">신청완료</span></div>
                     </div>
                 </div>
 
@@ -458,22 +421,13 @@
                         </div>
                         <div class="text-center px-8">
                             <h3 class="text-xl font-black text-slate-900 mb-2">로그인이 필요해요</h3>
-                            <p class="text-slate-500 font-medium text-sm leading-relaxed mb-6">민원 신청은 <strong
-                                    class="text-slate-800">@pess.cnehs.kr</strong> 학교 계정으로<br>로그인한 학생만 이용할 수 있어요.</p>
+                            <p class="text-slate-500 font-medium text-sm leading-relaxed mb-6">민원 신청은 <strong class="text-slate-800">@pess.cnehs.kr</strong> 학교 계정으로<br>로그인한 학생만 이용할 수 있어요.</p>
                             <button onclick="startGoogleLogin()" class="google-btn mx-auto shadow-md">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                                    <path
-                                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                                        fill="#4285F4" />
-                                    <path
-                                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                                        fill="#34A853" />
-                                    <path
-                                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                                        fill="#FBBC05" />
-                                    <path
-                                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                                        fill="#EA4335" />
+                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                                 </svg>
                                 학교 Google 계정으로 로그인
                             </button>
@@ -486,29 +440,23 @@
                                 <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg">
                                     <i data-lucide="alert-circle" class="w-5 h-5 text-blue-600"></i> 민원 신청 시 유의사항
                                 </h4>
-                                <ul
-                                    class="text-[15px] text-slate-600 space-y-4 list-disc ml-5 font-medium leading-relaxed">
-                                    <li><strong class="text-slate-800">개인정보 보호:</strong> 민감한 개인정보가 본문에 노출되지 않도록 주의 해주세요.
-                                    </li>
+                                <ul class="text-[15px] text-slate-600 space-y-4 list-disc ml-5 font-medium leading-relaxed">
+                                    <li><strong class="text-slate-800">개인정보 보호:</strong> 민감한 개인정보가 본문에 노출되지 않도록 주의 해주세요.</li>
                                     <li><strong class="text-slate-800">반려 기준:</strong> 욕설, 근거 없는 비방 등은 삭제될 수 있어요.</li>
                                 </ul>
                             </div>
-                            <label
-                                class="flex items-center gap-3 p-5 bg-slate-50 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-100 transition-colors">
-                                <input type="checkbox" id="agree-check"
-                                    class="w-6 h-6 rounded border-slate-300 text-blue-700">
+                            <label class="flex items-center gap-3 p-5 bg-slate-50 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-100 transition-colors">
+                                <input type="checkbox" id="agree-check" class="w-6 h-6 rounded border-slate-300 text-blue-700">
                                 <span class="text-base font-bold text-slate-800">위 유의사항을 모두 숙지하였으며, 이에 동의합니다.</span>
                             </label>
-                            <button type="button" onclick="nextStep(2)"
-                                class="w-full bg-blue-700 hover:bg-blue-800 text-white h-16 rounded-2xl font-black text-lg shadow-xl shadow-blue-100 transition-all flex items-center justify-center gap-2">
+                            <button type="button" onclick="nextStep(2)" class="w-full bg-blue-700 hover:bg-blue-800 text-white h-16 rounded-2xl font-black text-lg shadow-xl shadow-blue-100 transition-all flex items-center justify-center gap-2">
                                 다음 단계로 이동 <i data-lucide="arrow-right" class="w-5 h-5"></i>
                             </button>
                         </div>
 
                         <div id="step-2" class="hidden p-8 md:p-12 space-y-8">
                             <!-- 로그인 계정 표시 -->
-                            <div id="user-info-bar"
-                                class="hidden items-center gap-3 p-4 bg-blue-50 border border-blue-100 rounded-2xl">
+                            <div id="user-info-bar" class="hidden items-center gap-3 p-4 bg-blue-50 border border-blue-100 rounded-2xl">
                                 <img id="form-user-avatar" src="" alt="" class="w-9 h-9 rounded-full hidden">
                                 <div>
                                     <p class="text-xs font-black text-blue-400 uppercase tracking-widest">로그인된 학교 계정</p>
@@ -518,13 +466,11 @@
                             <div class="grid md:grid-cols-2 gap-8">
                                 <div class="space-y-2">
                                     <label class="text-[11px] font-black text-slate-400 uppercase">신청인 (학번 성명)</label>
-                                    <input id="f-user" type="text" placeholder="예: 10101 홍길동"
-                                        class="w-full h-14 px-5 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none">
+                                    <input id="f-user" type="text" placeholder="예: 10101 홍길동" class="w-full h-14 px-5 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none">
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-[11px] font-black text-slate-400 uppercase">민원 분류</label>
-                                    <select id="f-category"
-                                        class="w-full h-14 px-5 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none">
+                                    <select id="f-category" class="w-full h-14 px-5 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none">
                                         <option value="시설">시설 보수 및 개선</option>
                                         <option value="규정">교내 생활 규정 건의</option>
                                         <option value="급식">급식 위생 및 메뉴 건의</option>
@@ -534,61 +480,46 @@
                             </div>
                             <div class="grid md:grid-cols-2 gap-8">
                                 <div class="space-y-2">
-                                    <label class="text-[11px] font-black text-slate-400 uppercase">확인용 비밀번호 (숫자
-                                        4자리)</label>
-                                    <input id="f-password" type="password" maxlength="4" pattern="\d*"
-                                        inputmode="numeric" placeholder="숫자 4자리"
-                                        class="w-full h-14 px-5 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none">
+                                    <label class="text-[11px] font-black text-slate-400 uppercase">확인용 비밀번호 (숫자 4자리)</label>
+                                    <input id="f-password" type="password" maxlength="4" pattern="\d*" inputmode="numeric" placeholder="숫자 4자리" class="w-full h-14 px-5 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none">
                                 </div>
                             </div>
                             <div class="space-y-2">
                                 <label class="text-[11px] font-black text-slate-400 uppercase">민원 제목</label>
-                                <input id="f-title" type="text" placeholder="민원의 핵심 내용을 명확히 기재해야 해요."
-                                    class="w-full h-14 px-5 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none">
+                                <input id="f-title" type="text" placeholder="민원의 핵심 내용을 명확히 기재해야 해요." class="w-full h-14 px-5 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-[11px] font-black text-slate-400 uppercase">상세 내용</label>
-                                <textarea id="f-content" rows="6" placeholder="구체적으로 작성해 주세요."
-                                    class="w-full p-6 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none resize-none leading-relaxed"></textarea>
+                                <textarea id="f-content" rows="6" placeholder="구체적으로 작성해 주세요." class="w-full p-6 bg-slate-50 border border-slate-100 rounded-2xl font-bold outline-none resize-none leading-relaxed"></textarea>
                             </div>
-                            <label
-                                class="flex items-center gap-3 p-4 bg-slate-50 border border-slate-100 rounded-2xl cursor-pointer">
-                                <input type="checkbox" id="f-secret"
-                                    class="w-5 h-5 rounded border-slate-300 text-blue-700">
+                            <label class="flex items-center gap-3 p-4 bg-slate-50 border border-slate-100 rounded-2xl cursor-pointer">
+                                <input type="checkbox" id="f-secret" class="w-5 h-5 rounded border-slate-300 text-blue-700">
                                 <span class="text-sm font-bold text-slate-700 flex items-center gap-2">
                                     <i data-lucide="lock" class="w-4 h-4 text-slate-500"></i> 비밀글 설정 (내용 비공개 처리)
                                 </span>
                             </label>
                             <div class="flex gap-4 pt-2">
-                                <button type="button" onclick="nextStep(1)"
-                                    class="flex-1 bg-slate-100 text-slate-500 h-16 rounded-2xl font-black hover:bg-slate-200 transition-all flex items-center justify-center gap-2">
+                                <button type="button" onclick="nextStep(1)" class="flex-1 bg-slate-100 text-slate-500 h-16 rounded-2xl font-black hover:bg-slate-200 transition-all flex items-center justify-center gap-2">
                                     <i data-lucide="arrow-left" class="w-5 h-5"></i> 이전 단계
                                 </button>
-                                <button type="button" id="btn-submit" onclick="submitPetition()"
-                                    class="flex-[2] bg-blue-700 text-white h-16 rounded-2xl font-black text-lg shadow-xl shadow-blue-100 hover:bg-blue-800 transition-all flex items-center justify-center gap-2">
+                                <button type="button" id="btn-submit" onclick="submitPetition()" class="flex-[2] bg-blue-700 text-white h-16 rounded-2xl font-black text-lg shadow-xl shadow-blue-100 hover:bg-blue-800 transition-all flex items-center justify-center gap-2">
                                     <i data-lucide="send" class="w-5 h-5"></i> 민원 접수
                                 </button>
                             </div>
                         </div>
 
                         <div id="step-3" class="hidden p-8 md:p-12 text-center space-y-8 py-20">
-                            <div
-                                class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <i data-lucide="check-circle" class="w-10 h-10"></i>
                             </div>
                             <h3 class="text-3xl font-black text-slate-900">민원 접수가 완료되었어요.</h3>
-                            <div
-                                class="bg-blue-50 p-6 rounded-2xl inline-block w-full max-w-xs border border-blue-100 mt-4">
+                            <div class="bg-blue-50 p-6 rounded-2xl inline-block w-full max-w-xs border border-blue-100 mt-4">
                                 <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">접수 번호</p>
                                 <p class="text-2xl font-black text-blue-700 tracking-wider" id="final-id"></p>
                             </div>
                             <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8">
-                                <button type="button" onclick="resetReport()"
-                                    class="bg-white border-2 border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-black hover:bg-slate-50 transition-all">새로운
-                                    민원 작성</button>
-                                <button type="button" onclick="showSection('status')"
-                                    class="bg-slate-900 text-white px-8 py-4 rounded-xl font-black hover:bg-slate-800 transition-all">처리
-                                    현황 조회</button>
+                                <button type="button" onclick="resetReport()" class="bg-white border-2 border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-black hover:bg-slate-50 transition-all">새로운 민원 작성</button>
+                                <button type="button" onclick="showSection('status')" class="bg-slate-900 text-white px-8 py-4 rounded-xl font-black hover:bg-slate-800 transition-all">처리 현황 조회</button>
                             </div>
                         </div>
                     </div>
@@ -612,16 +543,12 @@
                             <i data-lucide="shield-check" class="text-red-600 w-8 h-8"></i> 관리자 대시보드
                         </h2>
                         <div class="flex gap-2">
-                            <button id="admin-tab-petition" onclick="switchAdminTab('petition')"
-                                class="admin-sub-tab active">민원 관리</button>
-                            <button id="admin-tab-notice" onclick="switchAdminTab('notice')"
-                                class="admin-sub-tab inactive">공지사항 관리</button>
-                            <button id="admin-tab-qna" onclick="switchAdminTab('qna')"
-                                class="admin-sub-tab inactive">Q&A 관리</button>
+                            <button id="admin-tab-petition" onclick="switchAdminTab('petition')" class="admin-sub-tab active">민원 관리</button>
+                            <button id="admin-tab-notice" onclick="switchAdminTab('notice')" class="admin-sub-tab inactive">공지사항 관리</button>
+                            <button id="admin-tab-qna" onclick="switchAdminTab('qna')" class="admin-sub-tab inactive">Q&A 관리</button>
                         </div>
                     </div>
-                    <button onclick="logoutAdmin()"
-                        class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg font-bold text-sm hover:bg-slate-300 transition-colors flex items-center gap-2">
+                    <button onclick="logoutAdmin()" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg font-bold text-sm hover:bg-slate-300 transition-colors flex items-center gap-2">
                         <i data-lucide="log-out" class="w-4 h-4"></i> 로그아웃
                     </button>
                 </div>
@@ -645,8 +572,7 @@
                 </div>
                 <div id="admin-view-notice" class="hidden animate-fade">
                     <div class="flex justify-end mb-4">
-                        <button onclick="openEditNoticeModal()"
-                            class="bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-blue-800 flex items-center gap-2">
+                        <button onclick="openEditNoticeModal()" class="bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-blue-800 flex items-center gap-2">
                             <i data-lucide="plus" class="w-4 h-4"></i> 새 공지사항 추가
                         </button>
                     </div>
@@ -669,8 +595,7 @@
                 </div>
                 <div id="admin-view-qna" class="hidden animate-fade">
                     <div class="flex justify-end mb-4">
-                        <button onclick="openEditQnAModal()"
-                            class="bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-blue-800 flex items-center gap-2">
+                        <button onclick="openEditQnAModal()" class="bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-blue-800 flex items-center gap-2">
                             <i data-lucide="plus" class="w-4 h-4"></i> 새 Q&A 추가
                         </button>
                     </div>
@@ -696,217 +621,220 @@
             <div class="max-w-6xl mx-auto px-6 py-10">
                 <div class="flex flex-wrap gap-4 mb-6">
                     <a href="#" class="text-sm font-black text-blue-700 hover:underline">개인정보처리방침</a>
-                    <a href="https://docs.google.com/document/d/1bkbKRpqoNqk_7HxfS0s9c3bYve3Hs7kbr9Iacf1T02Y/edit?usp=sharing" target="_blank"
-                        class="text-sm font-bold text-slate-500 hover:text-slate-800">
-                        이용약관
-                    </a>
-                    <a href="#" onclick="showSection('board'); switchBoardTab('qna'); return false;"
-                        class="text-sm font-bold text-slate-500 hover:text-slate-800">자주하는 질문</a>
+                    <!-- ★ 수정 1: 이용약관 → 외부링크 대신 모달 오픈 -->
+                    <a href="#" onclick="openTermsModal(); return false;" class="text-sm font-bold text-slate-500 hover:text-slate-800">이용약관</a>
+                    <a href="#" onclick="showSection('board'); switchBoardTab('qna'); return false;" class="text-sm font-bold text-slate-500 hover:text-slate-800">자주하는 질문</a>
                 </div>
                 <div class="space-y-2 mb-8">
                     <p class="text-sm text-slate-500 font-medium">(32031) 충청남도 논산시 논산대로 119 논산대건고등학교</p>
-                    <p class="text-sm text-slate-500 font-medium">대건 신문고 시스템 이용관련 문의 <strong
-                            class="text-slate-800">(총학생회 인권복지부)</strong>, 평일 09:00~18:00</p>
+                    <p class="text-sm text-slate-500 font-medium">대건 신문고 시스템 이용관련 문의 <strong class="text-slate-800">(총학생회 인권복지부)</strong>, 평일 09:00~18:00</p>
                 </div>
-                <p class="text-xs text-slate-400 font-medium">© Nonsan Daegeon High School Student Council. All rights
-                    reserved.</p>
+                <p class="text-xs text-slate-400 font-medium">© Nonsan Daegeon High School Student Council. All rights reserved.</p>
             </div>
         </footer>
     </div>
 
+    <!-- ★ 수정 1: 이용약관 모달 (신규 추가) -->
+    <div id="terms-modal" class="hidden fixed inset-0 bg-slate-900/70 z-[130] flex items-center justify-center p-4 animate-fade">
+        <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl relative flex flex-col max-h-[85vh]">
+            <!-- 헤더 -->
+            <div class="flex items-center justify-between p-8 pb-6 border-b border-slate-100 shrink-0">
+                <div>
+                    <h3 class="text-2xl font-black text-slate-900">이용약관</h3>
+                    <p class="text-xs font-medium text-slate-400 mt-1">논산대건고등학교 대건 신문고 서비스 이용약관</p>
+                </div>
+                <button onclick="closeModal('terms-modal')" class="text-slate-400 hover:text-slate-800 transition-colors ml-4 shrink-0">
+                    <i data-lucide="x" class="w-7 h-7"></i>
+                </button>
+            </div>
+            <!-- 스크롤 본문 -->
+            <div id="terms-modal-body" class="p-8 pt-6 text-[14px] leading-relaxed text-slate-600 font-medium space-y-6">
+                <div>
+                    <h6 class="font-black text-slate-900 text-base mb-2">대건신문고 이용약관</h6>
+                </div>
+                <div>
+                    <h5 class="font-black text-slate-900 text-base mb-1">제1장 총칙</h5>
+                </div>
+                <div>
+                    <h4 class="font-black text-slate-900 text-base mb-2">제 1 조 (목적)</h4>
+                    <p>본 이용약관(이하 '약관')은 논산대건고등학교 총학생회(이하 '학생회')가 운영하는 대건신문고 사이트(이하 '신문고')가 제공하는 모든 서비스(이하 '서비스')의 이용에 관한 기본적인 사항을 규정함을 목적으로 해요.</p>
+                </div>
+                <div>
+                    <h4 class="font-black text-slate-900 text-base mb-2">제 2 조 (용어의 정의)</h4>
+                    <p>① 본 약관에서 사용하는 용어의 정의는 다음과 같아요.<br>     1. "이용자"란 본 약관에 따라 신문고 서비스를 제공받는 자를 말해요.<br>     2. "회원"이란 서비스를 이용하기 위하여 본인 인증을 거치거나 학교 통합 계정으로 로그인한 본교 재학생 및 교직원을 말해요.<br>     3. "게시물"이란 신문고에 등록된 민원, 제안 및 이를 구성하는 각종 파일, 링크, 댓글 등을 포함하는 정보를 말해요.<br>     4. "공개게시물"이란 다른 학우들과 공유할 목적으로 신문고 현황판 등에 공개된 콘텐츠를 말해요.<br>     5. "탈퇴"란 회원이 졸업, 전학 등의 사유로 서비스 이용 권한을 해지하거나 정지하는 행위를 말해요.<br>② 이 약관에서 사용하는 용어의 정의는 제1항에서 정하는 것을 제외하고는 본교 학칙 및 관계 법령에서 정하는 바에 따라요.</p>
+                </div>
+                <div>
+                    <h4 class="font-black text-slate-900 text-base mb-2">제 3 조 (약관의 효력과 변경)</h4>
+                    <p>① 이 약관은 서비스 화면에 게시하거나 기타의 방법으로 이용자에게 공지함으로써 효력이 발생하며, 귀하가 본 약관의 내용에 동의하는 경우 신문고의 서비스 제공 및 귀하의 서비스 사용 행위에는 본 약관이 우선적으로 적용해요.<br> ② 학생회는 본 약관을 변경할 수 있으며, 변경된 약관은 적용일자 7일 전부터 공지해요. 변경 공지 후 이용자가 명시적으로 거부 의사를 표시하지 아니하면 약관 변경에 동의한 것으로 간주해요.<br> ③ 이용자가 변경된 약관에 동의하지 아니하는 경우, 이용자는 본인의 이용 등록을 취소(탈퇴)할 수 있어요.</p>
+                </div>
+                <div>
+                    <h4 class="font-black text-slate-900 text-base mb-2">제 4 조 (약관 외 준칙)</h4>
+                    <p>본 약관에 명시되지 않은 사항은 개인정보 보호법, 정보통신망 이용촉진 및 정보보호 등에 관한 법률, 본교 학생 생활 규정 및 기타 관련 법령의 규정에 의해요.</p>
+                </div>
+                <div>
+                    <h5 class="font-black text-slate-900 text-base mb-1">제2장 서비스의 제공 및 이용</h5>
+                </div>
+                <div>
+                    <h4 class="font-black text-slate-900 text-base mb-2">제 5 조 (서비스의 이용시간)</h4>
+                    <p>① 서비스 이용시간은 신문고의 업무상 또는 기술상 특별한 지장이 없는 한 연중무휴, 1일 24시간을 원칙으로 해요.<br>② 제1항의 이용시간은 정기점검 등의 필요로 인하여 학생회가 정한 날 또는 시간은 예외로 해요.</p>
+                </div>
+                <div>
+                    <h4 class="font-black text-slate-900 text-base mb-2">제 6 조 (게시물의 관리 및 삭제)</h4>
+                    <p>① 학생회는 서비스 내에 이를 게시하고 이용자의 이해를 돕기 위한 목적 내에서 게시물의 전부 또는 일부를 편집할 수 있어요.<br>② 학생회는 다음 각 호에 해당하는 게시물이나 자료를 사전 통지 없이 삭제하거나 이동 또는 등록을 거부할 수 있어요.<br>    1. 음란, 저속하다고 판단되는 내용인 경우<br>    2. 다른 이용자 또는 제3자에게 욕설과 언어폭력, 심한 모욕을 주거나 명예를 손상시키는 내용인 경우<br>    3. 이용자에게 혐오감 또는 공포심을 불러일으키는 내용인 경우<br>    4. 공공질서 및 미풍양속에 위반되는 내용인 경우<br>    5. 정치적 견해 차이, 인종·성별·지역·종교에 대한 차별 또는 비하내용인 경우<br>    6. 다른 사용자의 개인정보를 수집, 저장, 공개하는 행위 또는 내용인 경우<br>    7. 타인의 컴퓨터를 손상시킬 수 있는 바이러스, 오염된 파일, 또는 기타 유사한 소프트웨어 또는 프로그램을 포함하는 자료를 게시한 경우<br>    8. 스팸, 광고·홍보, 영리를 목적으로 하는 상업적인 내용인 경우<br>    9. 게시글 내에 삽입된 참조정보(URL 등)가 본 내용과 관련이 없는 경우<br>    10. 저작권 및 지적재산권 침해에 해당되는 내용인 경우<br>    11. 다른 사용자의 사용에 불편을 초래할 정도로 사이트의 이용을 독점(게시물 도배, 동일내용의 중·반복 게시 등)하는 행위<br>    12. 비정상적인 방법으로 게시물을 등록하거나 공감 및 댓글수를 조작하는 경우<br>    13. 불량 게시물로 신고가 들어온 경우<br>    14. 서비스 성격에 부합하지 않는 내용인 경우<br>    15. 기타 이 서비스 약관 또는 관계 법령에 위배되는 경우<br>③ 신문고에 게시된 내용이 일정 기간 이상 경과되어 게시물로서의 효력을 상실하여 그 존치 목적이 불분명한 경우는 게시물을 삭제할 수 있어요.</p>
+                </div>
+                <div>
+                    <h4 class="font-black text-slate-900 text-base mb-2">제 7 조 (서비스의 이용제한)</h4>
+                    <p> ① 학생회는 다음 각 호에 해당하는 경우 서비스 이용을 제한할 수 있어요.<br>    1. 다른 사람의 명의를 사용하여 신청하였을 때<br>    2. 이용 신청 내용을 허위로 기재하였거나 신청하였을 때<br>    3. 교내 질서 혹은 미풍양속을 저해할 목적으로 신청하였을 때<br>    4. 다른 사람의 신문고 서비스 이용을 방해하거나 그 정보를 도용하는 등의 행위를 하였을 때<br>    5. 신문고를 이용하여 본 약관 및 학칙이 금지하는 행위를 하는 경우<br>② 학생회는 시스템 용량 부족, 기술상 장애 등 불가피한 사유가 있는 경우 그 사유가 해소될 때까지 이용 승인을 유보할 수 있어요.</p>
+                </div>
+                <div>
+                    <h4 class="font-black text-slate-900 text-base mb-2">제 8 조 (서비스의 변경, 중지 및 공지)</h4>
+                    <p>① 학생회는 기술상·운영상의 필요에 의해 서비스의 일부 또는 전부를 변경하거나 중단할 수 있어요.<br>② 학생회는 긴급한 시스템 점검, 서버 증설 및 교체 등 부득이한 사유로 인하여 예고 없이 일시적으로 서비스를 중단할 수 있으며, 완전히 중단할 수 있어요.<br>③ 정상적인 서비스 제공의 어려움으로 인하여 서비스를 중지하여야 할 경우에는 서비스 중지 7일 전에 공지 후 서비스를 중지할 수 있어요. 상당한 이유가 있을 경우 사전 고지 기간은 단축되거나 사후 통지될 수 있어요.<br>④ 신문고의 사정으로 서비스를 영구적으로 중단하여야 할 경우에는 사전 공지 기간은 1개월로 해요.<br>⑤ 천재지변, 학사 일정의 급격한 변동, 관리 범위 외의 서버 장애 및 기타 불가항력에 의하여 정상적인 서비스 제공이 불가능할 경우 일시적으로 서비스를 제한, 정지시킬 수 있으며 사전 또는 사후에 중지 사유 및 기간을 공지해요.<br>⑥ 제5항의 경우로 신문고에 보관되거나 전송된 게시물 및 기타 메시지 등의 내용에 삭제·손실이 있을 경우에는 학생회는 관련 책임을 지지 않아요.</p>
+                </div>
+                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                    <p class="text-xs text-slate-500 font-bold">부칙 본 약관은 2026년 5월 10일부터 적용 및 시행해요.<br>논산대건고등학교 총학생회</p>
+                </div>
+            </div>
+            <!-- 닫기 버튼 -->
+            <div class="p-6 pt-4 border-t border-slate-100 shrink-0">
+                <button onclick="closeModal('terms-modal')" class="w-full bg-slate-900 text-white h-12 rounded-2xl font-black hover:bg-slate-800 transition-all">
+                    확인했어요
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 학생 민원 상세 모달 -->
-    <div id="student-view-modal"
-        class="hidden fixed inset-0 bg-slate-900/70 z-[115] flex items-center justify-center p-4 animate-fade">
+    <div id="student-view-modal" class="hidden fixed inset-0 bg-slate-900/70 z-[115] flex items-center justify-center p-4 animate-fade">
         <div class="bg-white rounded-3xl p-8 w-full max-w-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeModal('student-view-modal')"
-                class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 transition-colors"><i data-lucide="x"
-                    class="w-7 h-7"></i></button>
+            <button onclick="closeModal('student-view-modal')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 transition-colors"><i data-lucide="x" class="w-7 h-7"></i></button>
             <div class="border-b border-slate-100 pb-6 mb-8 mt-4">
                 <div class="flex items-center gap-2 mb-4">
-                    <span id="sv-category-badge"
-                        class="bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl text-xs font-black">카테고리</span>
+                    <span id="sv-category-badge" class="bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl text-xs font-black">카테고리</span>
                     <span id="sv-date" class="text-sm font-medium text-slate-400">날짜</span>
                 </div>
                 <h3 id="sv-title" class="text-3xl font-black text-slate-950 leading-tight">민원 제목</h3>
             </div>
             <div class="space-y-10">
                 <div class="space-y-4">
-                    <h4 class="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><i
-                            data-lucide="text-quote" class="w-4 h-4 text-slate-400"></i> 민원 내용</h4>
-                    <div id="sv-content"
-                        class="p-6 bg-slate-50 border border-slate-100 rounded-2xl text-slate-800 text-base leading-relaxed whitespace-pre-line font-medium min-h-[100px]">
-                    </div>
+                    <h4 class="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><i data-lucide="text-quote" class="w-4 h-4 text-slate-400"></i> 민원 내용</h4>
+                    <div id="sv-content" class="p-6 bg-slate-50 border border-slate-100 rounded-2xl text-slate-800 text-base leading-relaxed whitespace-pre-line font-medium min-h-[100px]"></div>
                 </div>
                 <div class="space-y-4">
-                    <h4 class="text-sm font-black text-blue-400 uppercase tracking-widest flex items-center gap-2"><i
-                            data-lucide="corner-down-right" class="w-4 h-4 text-blue-400"></i> 총학생회 공식 답변</h4>
-                    <div id="sv-reply-content"
-                        class="p-6 bg-blue-50/50 border border-blue-100 rounded-2xl text-blue-950 text-base leading-relaxed whitespace-pre-line font-semibold min-h-[80px]">
-                    </div>
+                    <h4 class="text-sm font-black text-blue-400 uppercase tracking-widest flex items-center gap-2"><i data-lucide="corner-down-right" class="w-4 h-4 text-blue-400"></i> 총학생회 공식 답변</h4>
+                    <div id="sv-reply-content" class="p-6 bg-blue-50/50 border border-blue-100 rounded-2xl text-blue-950 text-base leading-relaxed whitespace-pre-line font-semibold min-h-[80px]"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 비밀번호 확인 모달 -->
-    <div id="secret-check-modal"
-        class="hidden fixed inset-0 bg-slate-900/80 z-[120] flex items-center justify-center p-4 animate-fade">
+    <div id="secret-check-modal" class="hidden fixed inset-0 bg-slate-900/80 z-[120] flex items-center justify-center p-4 animate-fade">
         <div class="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl relative text-center">
-            <button onclick="closeModal('secret-check-modal')"
-                class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 transition-colors"><i data-lucide="x"
-                    class="w-6 h-6"></i></button>
-            <div
-                class="w-16 h-16 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-5 border-4 border-blue-50">
+            <button onclick="closeModal('secret-check-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="w-16 h-16 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-5 border-4 border-blue-50">
                 <i data-lucide="lock" class="w-8 h-8"></i>
             </div>
             <h3 class="text-2xl font-black text-slate-900 mb-2">비밀번호 확인</h3>
-            <p class="text-sm text-slate-500 mb-7 leading-relaxed font-medium">민원 작성 시 입력했던<br><strong
-                    class="text-slate-900">숫자 4자리 비밀번호</strong>를 입력해 주세요.</p>
+            <p class="text-sm text-slate-500 mb-7 leading-relaxed font-medium">민원 작성 시 입력했던<br><strong class="text-slate-900">숫자 4자리 비밀번호</strong>를 입력해 주세요.</p>
             <input type="hidden" id="current-secret-index">
-            <input type="password" id="secret-pw-input" maxlength="4" pattern="\d*" inputmode="numeric"
-                class="w-full h-16 px-6 bg-slate-50 border-2 border-slate-200 rounded-2xl font-black outline-none text-center mb-5 focus:border-blue-600 transition-colors tracking-[0.6em] text-3xl"
-                placeholder="••••" onkeypress="if(event.key === 'Enter') submitSecretPassword()">
-            <button onclick="submitSecretPassword()"
-                class="w-full bg-blue-700 text-white h-16 rounded-2xl font-black text-lg hover:bg-blue-800 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-2">내용
-                확인 <i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+            <input type="password" id="secret-pw-input" maxlength="4" pattern="\d*" inputmode="numeric" class="w-full h-16 px-6 bg-slate-50 border-2 border-slate-200 rounded-2xl font-black outline-none text-center mb-5 focus:border-blue-600 transition-colors tracking-[0.6em] text-3xl" placeholder="••••" onkeypress="if(event.key === 'Enter') submitSecretPassword()">
+            <button onclick="submitSecretPassword()" class="w-full bg-blue-700 text-white h-16 rounded-2xl font-black text-lg hover:bg-blue-800 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-2">내용 확인 <i data-lucide="arrow-right" class="w-5 h-5"></i></button>
         </div>
     </div>
 
     <!-- 관리자 로그인 모달 -->
-    <div id="admin-login-modal"
-        class="hidden fixed inset-0 bg-slate-900/60 z-[120] flex items-center justify-center p-4 animate-fade">
+    <div id="admin-login-modal" class="hidden fixed inset-0 bg-slate-900/60 z-[120] flex items-center justify-center p-4 animate-fade">
         <div class="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl relative text-center">
-            <button onclick="closeAdminLoginModal()"
-                class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i data-lucide="x"
-                    class="w-6 h-6"></i></button>
-            <div
-                class="w-16 h-16 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-slate-50">
+            <button onclick="closeAdminLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="w-16 h-16 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-slate-50">
                 <i data-lucide="shield-check" class="w-8 h-8"></i>
             </div>
             <h3 class="text-2xl font-black text-slate-900 mb-6">관리자 로그인</h3>
-            <input type="password" id="admin-pw-input"
-                class="w-full h-14 px-5 bg-slate-50 border border-slate-200 rounded-xl font-bold outline-none text-center mb-4 focus:border-blue-600 tracking-[0.3em]"
-                placeholder="****" onkeypress="if(event.key === 'Enter') submitAdminLogin()">
+            <input type="password" id="admin-pw-input" class="w-full h-14 px-5 bg-slate-50 border border-slate-200 rounded-xl font-bold outline-none text-center mb-4 focus:border-blue-600 tracking-[0.3em]" placeholder="****" onkeypress="if(event.key === 'Enter') submitAdminLogin()">
             <div id="admin-login-spinner" class="hidden flex justify-center mb-4">
                 <div class="spinner"></div>
             </div>
-            <button id="btn-admin-login" onclick="submitAdminLogin()"
-                class="w-full bg-slate-900 text-white h-14 rounded-xl font-black hover:bg-slate-800 transition-all flex items-center justify-center gap-2">접속하기
-                <i data-lucide="key" class="w-4 h-4"></i></button>
+            <button id="btn-admin-login" onclick="submitAdminLogin()" class="w-full bg-slate-900 text-white h-14 rounded-xl font-black hover:bg-slate-800 transition-all flex items-center justify-center gap-2">접속하기 <i data-lucide="key" class="w-4 h-4"></i></button>
         </div>
     </div>
 
     <!-- 관리자 답변 모달 -->
-    <div id="admin-reply-modal"
-        class="hidden fixed inset-0 bg-slate-900/60 z-[110] flex items-center justify-center p-4 animate-fade">
+    <div id="admin-reply-modal" class="hidden fixed inset-0 bg-slate-900/60 z-[110] flex items-center justify-center p-4 animate-fade">
         <div class="bg-white rounded-3xl p-8 w-full max-w-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeModal('admin-reply-modal')"
-                class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 transition-colors"><i data-lucide="x"
-                    class="w-6 h-6"></i></button>
+            <button onclick="closeModal('admin-reply-modal')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 transition-colors"><i data-lucide="x" class="w-7 h-7"></i></button>
             <h3 class="text-2xl font-black text-slate-900 mb-6">답변 작성 및 상태 변경</h3>
-            <div id="admin-modal-preview"
-                class="mb-6 p-6 bg-slate-50 rounded-xl text-sm leading-relaxed text-slate-700 border border-slate-100 whitespace-pre-line font-medium max-h-40 overflow-y-auto">
-            </div>
+            <div id="admin-modal-preview" class="mb-6 p-6 bg-slate-50 rounded-xl text-sm leading-relaxed text-slate-700 border border-slate-100 whitespace-pre-line font-medium max-h-40 overflow-y-auto"></div>
             <div class="space-y-2 mb-6">
                 <label class="text-[11px] font-black text-slate-400 uppercase">공식 답변</label>
-                <textarea id="admin-reply-content" rows="6"
-                    class="w-full p-4 border-2 border-slate-200 rounded-xl outline-none focus:border-blue-600 resize-none font-medium leading-relaxed"
-                    placeholder="답변을 입력해주세요."></textarea>
+                <textarea id="admin-reply-content" rows="6" class="w-full p-4 border-2 border-slate-200 rounded-xl outline-none focus:border-blue-600 resize-none font-medium leading-relaxed" placeholder="답변을 입력해주세요."></textarea>
             </div>
-            <div
-                class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-t border-slate-100 pt-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-t border-slate-100 pt-6">
                 <div class="space-y-1">
                     <label class="text-[11px] font-black text-slate-400 uppercase">수동 상태 설정</label>
-                    <select id="admin-status-select"
-                        class="h-12 px-4 border border-slate-200 rounded-xl font-bold focus:border-blue-600 outline-none">
+                    <select id="admin-status-select" class="h-12 px-4 border border-slate-200 rounded-xl font-bold focus:border-blue-600 outline-none">
                         <option value="접수대기">접수대기</option>
                         <option value="처리중">처리중</option>
                         <option value="처리완료">처리완료</option>
                     </select>
                 </div>
                 <div class="flex gap-3 w-full sm:w-auto">
-                    <button onclick="closeModal('admin-reply-modal')"
-                        class="flex-1 sm:flex-initial px-6 py-3.5 bg-slate-100 font-bold rounded-xl hover:bg-slate-200 text-slate-700">취소</button>
-                    <button id="btn-save-admin" onclick="saveAdminReply()"
-                        class="flex-[2] sm:flex-initial px-8 py-3.5 bg-blue-700 text-white font-black rounded-xl hover:bg-blue-800 flex items-center gap-2"><i
-                            data-lucide="save" class="w-5 h-5"></i> 서버에 저장</button>
+                    <button onclick="closeModal('admin-reply-modal')" class="flex-1 sm:flex-initial px-6 py-3.5 bg-slate-100 font-bold rounded-xl hover:bg-slate-200 text-slate-700">취소</button>
+                    <button id="btn-save-admin" onclick="saveAdminReply()" class="flex-[2] sm:flex-initial px-8 py-3.5 bg-blue-700 text-white font-black rounded-xl hover:bg-blue-800 flex items-center gap-2"><i data-lucide="save" class="w-5 h-5"></i> 서버에 저장</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 공지사항 모달 -->
-    <div id="admin-notice-modal"
-        class="hidden fixed inset-0 bg-slate-900/60 z-[110] flex items-center justify-center p-4 animate-fade">
+    <div id="admin-notice-modal" class="hidden fixed inset-0 bg-slate-900/60 z-[110] flex items-center justify-center p-4 animate-fade">
         <div class="bg-white rounded-3xl p-8 w-full max-w-2xl shadow-2xl relative">
-            <button onclick="closeModal('admin-notice-modal')"
-                class="absolute top-6 right-6 text-slate-400 hover:text-slate-800"><i data-lucide="x"
-                    class="w-6 h-6"></i></button>
+            <button onclick="closeModal('admin-notice-modal')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800"><i data-lucide="x" class="w-6 h-6"></i></button>
             <h3 class="text-2xl font-black text-slate-900 mb-6" id="admin-notice-modal-title">공지사항 작성</h3>
             <input type="hidden" id="admin-notice-index">
             <div class="space-y-4 mb-6">
                 <div class="grid grid-cols-2 gap-4">
                     <div><label class="text-[11px] font-black text-slate-400 uppercase block mb-1">분류</label>
-                        <select id="admin-notice-type"
-                            class="w-full h-12 px-4 border border-slate-200 rounded-xl font-bold outline-none">
+                        <select id="admin-notice-type" class="w-full h-12 px-4 border border-slate-200 rounded-xl font-bold outline-none">
                             <option value="안내">안내 (회색)</option>
                             <option value="중요">중요 (빨간색)</option>
                             <option value="이벤트">이벤트 (파란색)</option>
                         </select>
                     </div>
                     <div><label class="text-[11px] font-black text-slate-400 uppercase block mb-1">작성자</label>
-                        <input type="text" id="admin-notice-author" value="총학생회"
-                            class="w-full h-12 px-4 border border-slate-200 rounded-xl font-bold outline-none">
+                        <input type="text" id="admin-notice-author" value="총학생회" class="w-full h-12 px-4 border border-slate-200 rounded-xl font-bold outline-none">
                     </div>
                 </div>
                 <div><label class="text-[11px] font-black text-slate-400 uppercase block mb-1">제목</label>
-                    <input type="text" id="admin-notice-title"
-                        class="w-full h-12 px-4 border border-slate-200 rounded-xl font-bold outline-none"
-                        placeholder="공지사항 제목">
+                    <input type="text" id="admin-notice-title" class="w-full h-12 px-4 border border-slate-200 rounded-xl font-bold outline-none" placeholder="공지사항 제목">
                 </div>
                 <div><label class="text-[11px] font-black text-slate-400 uppercase block mb-1">내용</label>
-                    <textarea id="admin-notice-content" rows="6"
-                        class="w-full p-4 border border-slate-200 rounded-xl font-medium outline-none resize-none"
-                        placeholder="내용을 입력해주세요."></textarea>
+                    <textarea id="admin-notice-content" rows="6" class="w-full p-4 border border-slate-200 rounded-xl font-medium outline-none resize-none" placeholder="내용을 입력해주세요."></textarea>
                 </div>
             </div>
             <div class="flex justify-end gap-3">
-                <button onclick="closeModal('admin-notice-modal')"
-                    class="px-6 py-3 bg-slate-100 font-bold rounded-xl hover:bg-slate-200">취소</button>
-                <button id="btn-save-notice" onclick="saveNotice()"
-                    class="px-8 py-3 bg-blue-700 text-white font-black rounded-xl hover:bg-blue-800 flex items-center gap-2"><i
-                        data-lucide="save" class="w-4 h-4"></i> 저장</button>
+                <button onclick="closeModal('admin-notice-modal')" class="px-6 py-3 bg-slate-100 font-bold rounded-xl hover:bg-slate-200">취소</button>
+                <button id="btn-save-notice" onclick="saveNotice()" class="px-8 py-3 bg-blue-700 text-white font-black rounded-xl hover:bg-blue-800 flex items-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> 저장</button>
             </div>
         </div>
     </div>
 
     <!-- Q&A 모달 -->
-    <div id="admin-qna-modal"
-        class="hidden fixed inset-0 bg-slate-900/60 z-[110] flex items-center justify-center p-4 animate-fade">
+    <div id="admin-qna-modal" class="hidden fixed inset-0 bg-slate-900/60 z-[110] flex items-center justify-center p-4 animate-fade">
         <div class="bg-white rounded-3xl p-8 w-full max-w-2xl shadow-2xl relative">
-            <button onclick="closeModal('admin-qna-modal')"
-                class="absolute top-6 right-6 text-slate-400 hover:text-slate-800"><i data-lucide="x"
-                    class="w-6 h-6"></i></button>
+            <button onclick="closeModal('admin-qna-modal')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800"><i data-lucide="x" class="w-6 h-6"></i></button>
             <h3 class="text-2xl font-black text-slate-900 mb-6" id="admin-qna-modal-title">Q&A 작성</h3>
             <input type="hidden" id="admin-qna-index">
             <div class="space-y-4 mb-6">
                 <div><label class="text-[11px] font-black text-slate-400 uppercase block mb-1">질문 (Q)</label>
-                    <input type="text" id="admin-qna-q"
-                        class="w-full h-12 px-4 border border-slate-200 rounded-xl font-bold outline-none"
-                        placeholder="예: 비밀번호를 분실하면 어떻게 하나요?">
+                    <input type="text" id="admin-qna-q" class="w-full h-12 px-4 border border-slate-200 rounded-xl font-bold outline-none" placeholder="예: 비밀번호를 분실하면 어떻게 하나요?">
                 </div>
                 <div><label class="text-[11px] font-black text-slate-400 uppercase block mb-1">답변 (A)</label>
-                    <textarea id="admin-qna-a" rows="4"
-                        class="w-full p-4 border border-slate-200 rounded-xl font-medium outline-none resize-none"
-                        placeholder="해결 방법이나 안내를 작성해주세요."></textarea>
+                    <textarea id="admin-qna-a" rows="4" class="w-full p-4 border border-slate-200 rounded-xl font-medium outline-none resize-none" placeholder="해결 방법이나 안내를 작성해주세요."></textarea>
                 </div>
             </div>
             <div class="flex justify-end gap-3">
-                <button onclick="closeModal('admin-qna-modal')"
-                    class="px-6 py-3 bg-slate-100 font-bold rounded-xl hover:bg-slate-200">취소</button>
-                <button id="btn-save-qna" onclick="saveQnA()"
-                    class="px-8 py-3 bg-blue-700 text-white font-black rounded-xl hover:bg-blue-800 flex items-center gap-2"><i
-                        data-lucide="save" class="w-4 h-4"></i> 저장</button>
+                <button onclick="closeModal('admin-qna-modal')" class="px-6 py-3 bg-slate-100 font-bold rounded-xl hover:bg-slate-200">취소</button>
+                <button id="btn-save-qna" onclick="saveQnA()" class="px-8 py-3 bg-blue-700 text-white font-black rounded-xl hover:bg-blue-800 flex items-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> 저장</button>
             </div>
         </div>
     </div>
@@ -921,6 +849,33 @@
         let petitions = [], boardNotices = [], boardQnAs = [];
         let currentEditingIndex = null;
         let currentUser = null; // { name, email, picture }
+
+        // ── ★ 수정 2: 로그인 세션 유지 (sessionStorage 사용) ──
+        // 페이지 로드 시 저장된 로그인 정보 복원
+        function restoreSession() {
+            try {
+                const saved = sessionStorage.getItem('daegeonUser');
+                if (saved) {
+                    currentUser = JSON.parse(saved);
+                }
+            } catch (e) {
+                currentUser = null;
+            }
+        }
+
+        // 로그인 성공 시 세션에 저장
+        function saveSession(user) {
+            try {
+                sessionStorage.setItem('daegeonUser', JSON.stringify(user));
+            } catch (e) {}
+        }
+
+        // 로그아웃 시 세션 삭제
+        function clearSession() {
+            try {
+                sessionStorage.removeItem('daegeonUser');
+            } catch (e) {}
+        }
 
         // ── Google OAuth ──────────────────────────────────────
         function initGoogleAuth() {
@@ -970,12 +925,14 @@
                 return;
             }
             currentUser = { email, name, picture };
+            saveSession(currentUser); // ★ 세션 저장
             updateLoginUI();
         }
 
         function logoutGoogle() {
             if (typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
             currentUser = null;
+            clearSession(); // ★ 세션 삭제
             updateLoginUI();
         }
 
@@ -1046,6 +1003,12 @@
 
         // ── 공통 유틸 ─────────────────────────────────────────
         function refreshIcons() { if (typeof lucide !== 'undefined') lucide.createIcons(); }
+
+        // ★ 수정 1: 이용약관 모달 열기
+        function openTermsModal() {
+            document.getElementById('terms-modal').classList.remove('hidden');
+            refreshIcons();
+        }
 
         function updateDashboardStats() {
             const total = petitions.length;
@@ -1234,6 +1197,7 @@
                 category: document.getElementById('f-category').value,
                 password, title, content,
                 isSecret: document.getElementById('f-secret').checked,
+                // ★ 수정 3: 접수 시 상태를 '접수대기'로 고정
                 status: "접수대기",
                 date: (() => { const d = new Date(); const pad = n => String(n).padStart(2, '0'); return `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`; })(),
                 reply: ""
@@ -1247,18 +1211,32 @@
             btn.disabled = false; btn.innerHTML = '<i data-lucide="send" class="w-5 h-5"></i> 민원 접수'; refreshIcons();
         }
 
+        // ★ 수정 3: 처리현황 렌더링 - 상태값 기준으로 배지 표시
+        function getStatusBadge(p) {
+            const status = p.status || '접수대기';
+            // status 필드 우선 사용, reply가 있으면 처리완료로 간주 (후방 호환)
+            if (status === '처리완료' || (p.reply && p.reply.trim() !== '' && status !== '접수대기' && status !== '처리중')) {
+                return { label: '처리완료', cls: 'text-green-600 bg-green-50' };
+            }
+            if (status === '처리중') {
+                return { label: '처리중', cls: 'text-blue-600 bg-blue-50' };
+            }
+            // 기본: 접수대기
+            return { label: '접수대기', cls: 'text-slate-500 bg-slate-100' };
+        }
+
         function renderStatusList() {
             const list = document.getElementById('petition-list');
             list.innerHTML = '';
             if (!petitions.length) { list.innerHTML = '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500 font-bold">접수된 민원이 없어요.</div>'; return; }
             [...petitions].reverse().forEach((p, ri) => {
                 const idx = petitions.length - 1 - ri;
-                const isComp = p.reply && p.reply.trim() !== '';
                 const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
+                const badge = getStatusBadge(p);
                 const item = document.createElement('div');
                 item.className = "bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-blue-400 hover:shadow-md transition-all";
                 item.onclick = () => openPetitionView(idx);
-                item.innerHTML = `<div class="flex flex-wrap items-center justify-between gap-4 mb-3"><div class="flex items-center gap-3"><span class="px-3 py-1 rounded-lg text-xs font-black ${isComp ? 'text-green-600 bg-green-50' : 'text-blue-600 bg-blue-50'}">${isComp ? '처리완료' : '처리중'}</span><span class="text-sm font-bold text-slate-400">${p.category}</span></div><span class="text-xs font-medium text-slate-400">${p.date}</span></div><h4 class="text-lg font-black text-slate-800 flex items-center gap-2">${isSecret ? '<i data-lucide="lock" class="w-4 h-4 text-slate-400"></i>' : ''} ${isSecret ? '비밀글로 보호된 민원이에요.' : p.title}</h4>`;
+                item.innerHTML = `<div class="flex flex-wrap items-center justify-between gap-4 mb-3"><div class="flex items-center gap-3"><span class="px-3 py-1 rounded-lg text-xs font-black ${badge.cls}">${badge.label}</span><span class="text-sm font-bold text-slate-400">${p.category}</span></div><span class="text-xs font-medium text-slate-400">${p.date}</span></div><h4 class="text-lg font-black text-slate-800 flex items-center gap-2">${isSecret ? '<i data-lucide="lock" class="w-4 h-4 text-slate-400"></i>' : ''} ${isSecret ? '비밀글로 보호된 민원이에요.' : p.title}</h4>`;
                 list.appendChild(item);
             });
             refreshIcons();
@@ -1287,15 +1265,10 @@
 
         function showStudentModal(p) {
             document.getElementById('sv-category-badge').innerText = p.category;
-
-            document.getElementById('sv-date').innerText =
-                `${p.id} · 작성자 ${p.user} · ${p.date}`;
-
+            document.getElementById('sv-date').innerText = `${p.id} · 작성자 ${p.user} · ${p.date}`;
             document.getElementById('sv-title').innerText = p.title;
             document.getElementById('sv-content').innerText = p.content;
-
             const replyEl = document.getElementById('sv-reply-content');
-
             if (p.reply && p.reply.trim()) {
                 replyEl.innerText = p.reply;
                 replyEl.className = "p-6 bg-blue-50 border border-blue-100 rounded-2xl text-blue-950 text-base leading-relaxed whitespace-pre-line font-medium min-h-[80px]";
@@ -1303,7 +1276,6 @@
                 replyEl.innerText = "현재 소관 부서에서 검토 및 처리 중이에요.";
                 replyEl.className = "p-6 bg-slate-50 border border-slate-200 rounded-2xl text-slate-500 text-base leading-relaxed whitespace-pre-line font-medium min-h-[80px]";
             }
-
             document.getElementById('student-view-modal').classList.remove('hidden');
         }
 
@@ -1316,16 +1288,21 @@
             if (tab === 'qna') loadAdminQnAs();
         }
 
+        // ★ 수정 3: 관리자 목록도 status 기준으로 배지 표시
         function renderAdminList() {
             const tbody = document.getElementById('admin-petition-list');
             tbody.innerHTML = '';
             if (!petitions.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-slate-500 font-bold">접수된 민원이 없습니다.</td></tr>'; return; }
             [...petitions].reverse().forEach((p, ri) => {
                 const idx = petitions.length - 1 - ri;
-                const isComp = p.reply && p.reply.trim() !== '';
+                const badge = getStatusBadge(p);
                 const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
+                // 관리자용 배지 색상 매핑
+                let adminBadgeCls = 'bg-slate-100 text-slate-600';
+                if (badge.label === '처리완료') adminBadgeCls = 'bg-green-100 text-green-700';
+                else if (badge.label === '처리중') adminBadgeCls = 'bg-blue-100 text-blue-700';
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td class="font-medium text-slate-500">${p.id}</td><td><span class="px-2 py-1 rounded-md text-xs font-bold ${isComp ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}">${isComp ? '처리완료' : '접수/처리중'}</span></td><td class="font-bold text-slate-700">${p.category}</td><td><div class="font-black text-slate-900 truncate max-w-xs flex items-center gap-1">${isSecret ? '<i data-lucide="lock" class="w-3 h-3 text-slate-400"></i>' : ''} ${p.title}</div></td><td class="text-slate-500">${p.user}</td><td class="text-xs text-slate-400">${p.googleEmail || '-'}</td><td class="text-center"><button onclick="openAdminReplyModal(${idx})" class="bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-slate-700">답변/관리</button></td>`;
+                tr.innerHTML = `<td class="font-medium text-slate-500">${p.id}</td><td><span class="px-2 py-1 rounded-md text-xs font-bold ${adminBadgeCls}">${badge.label}</span></td><td class="font-bold text-slate-700">${p.category}</td><td><div class="font-black text-slate-900 truncate max-w-xs flex items-center gap-1">${isSecret ? '<i data-lucide="lock" class="w-3 h-3 text-slate-400"></i>' : ''} ${p.title}</div></td><td class="text-slate-500">${p.user}</td><td class="text-xs text-slate-400">${p.googleEmail || '-'}</td><td class="text-center"><button onclick="openAdminReplyModal(${idx})" class="bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-slate-700">답변/관리</button></td>`;
                 tbody.appendChild(tr);
             });
             refreshIcons();
@@ -1484,6 +1461,7 @@
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
         document.addEventListener('DOMContentLoaded', () => {
+            restoreSession(); // ★ 수정 2: 새로고침 시 세션 복원
             refreshIcons();
             fetchPetitions();
             initGoogleAuth();
