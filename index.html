@@ -1460,7 +1460,7 @@
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
         document.addEventListener('DOMContentLoaded', () => {
-            restoreSession(); // ★ 수정 2: 새로고침 시 세션 복원
+            restoreSession();
             refreshIcons();
             fetchPetitions();
             initGoogleAuth();
