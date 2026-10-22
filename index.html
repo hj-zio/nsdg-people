@@ -1227,7 +1227,7 @@
             const list = document.getElementById('petition-list');
             list.innerHTML = '';
             if (!petitions.length) { list.innerHTML = '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500 font-bold">접수된 민원이 없어요.</div>'; return; }
-            [...petitions].reverse().forEach((p, ri) => {
+            [...petitions].reverse().slice(0, 5).forEach((p, ri) => {
                 const idx = petitions.length - 1 - ri;
                 const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
                 const badge = getStatusBadge(p);
