@@ -847,7 +847,8 @@
         let petitions = [], boardNotices = [], boardQnAs = [];
         let currentEditingIndex = null;
         let currentUser = null; // { name, email, picture }
-
+        let statusPage = 1;
+        const STATUS_PER_PAGE = 10;
         // ── ★ 수정 2: 로그인 세션 유지 (sessionStorage 사용) ──
         // 페이지 로드 시 저장된 로그인 정보 복원
         function restoreSession() {
@@ -884,7 +885,7 @@
                 auto_select: false,
             });
         }
-
+    
         function startGoogleLogin() {
             if (GOOGLE_CLIENT_ID.startsWith("여기에")) {
                 alert("⚠️ GOOGLE_CLIENT_ID를 발급받아 코드에 입력해야해요.");
@@ -1223,22 +1224,56 @@
             return { label: '접수대기', cls: 'text-slate-500 bg-slate-100' };
         }
 
-        function renderStatusList() {
-            const list = document.getElementById('petition-list');
-            list.innerHTML = '';
-            if (!petitions.length) { list.innerHTML = '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500 font-bold">접수된 민원이 없어요.</div>'; return; }
-            [...petitions].reverse().forEach((p, ri) => {
-                const idx = petitions.length - 1 - ri;
-                const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
-                const badge = getStatusBadge(p);
-                const item = document.createElement('div');
-                item.className = "bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-blue-400 hover:shadow-md transition-all";
-                item.onclick = () => openPetitionView(idx);
-                item.innerHTML = `<div class="flex flex-wrap items-center justify-between gap-4 mb-3"><div class="flex items-center gap-3"><span class="px-3 py-1 rounded-lg text-xs font-black ${badge.cls}">${badge.label}</span><span class="text-sm font-bold text-slate-400">${p.category}</span></div><span class="text-xs font-medium text-slate-400">${p.date}</span></div><h4 class="text-lg font-black text-slate-800 flex items-center gap-2">${isSecret ? '<i data-lucide="lock" class="w-4 h-4 text-slate-400"></i>' : ''} ${isSecret ? '비밀글로 보호된 민원이에요.' : p.title}</h4>`;
-                list.appendChild(item);
-            });
-            refreshIcons();
+function renderStatusList() {
+    const list = document.getElementById('petition-list');
+    list.innerHTML = '';
+    if (!petitions.length) {
+        list.innerHTML = '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500 font-bold">접수된 민원이 없어요.</div>';
+        renderStatusPagination(0);
+        return;
+    }
+
+    const totalPages = Math.ceil(petitions.length / STATUS_PER_PAGE);
+    if (statusPage > totalPages) statusPage = totalPages;
+    if (statusPage < 1) statusPage = 1;
+    const start = (statusPage - 1) * STATUS_PER_PAGE;
+
+    [...petitions].reverse().slice(start, start + STATUS_PER_PAGE).forEach((p, i) => {
+        const idx = petitions.length - 1 - (start + i);
+        const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
+        const badge = getStatusBadge(p);
+        const item = document.createElement('div');
+        item.className = "bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-blue-400 hover:shadow-md transition-all";
+        item.onclick = () => openPetitionView(idx);
+        item.innerHTML = `<div class="flex flex-wrap items-center justify-between gap-4 mb-3"><div class="flex items-center gap-3"><span class="px-3 py-1 rounded-lg text-xs font-black ${badge.cls}">${badge.label}</span><span class="text-sm font-bold text-slate-400">${p.category}</span></div><span class="text-xs font-medium text-slate-400">${p.date}</span></div><h4 class="text-lg font-black text-slate-800 flex items-center gap-2">${isSecret ? '<i data-lucide="lock" class="w-4 h-4 text-slate-400"></i>' : ''} ${isSecret ? '비밀글로 보호된 민원이에요.' : p.title}</h4>`;
+        list.appendChild(item);
+    });
+
+    renderStatusPagination(totalPages);
+    refreshIcons();
+}
+
+    function renderStatusPagination(totalPages) {
+        const box = document.getElementById('petition-pagination');
+        box.innerHTML = '';
+        if (totalPages <= 1) return;
+        for (let n = 1; n <= totalPages; n++) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = n;
+            btn.className = n === statusPage
+                ? 'w-10 h-10 rounded-xl font-black text-sm bg-blue-700 text-white shadow-md'
+                : 'w-10 h-10 rounded-xl font-bold text-sm bg-white border border-slate-200 text-slate-600 hover:bg-slate-100';
+            btn.onclick = () => goStatusPage(n);
+            box.appendChild(btn);
         }
+    }
+
+    function goStatusPage(n) {
+        statusPage = n;
+        renderStatusList();
+        document.getElementById('sec-status').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
         function openPetitionView(idx) {
             const p = petitions[idx];
