@@ -548,6 +548,10 @@
                     </button>
                 </div>
                 <div id="admin-view-petition" class="block animate-fade">
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button type="button" id="admin-filter-all" onclick="setAdminFilter('all')" class="px-4 py-2 rounded-full text-sm font-black bg-blue-700 text-white shadow-md">전체 <span id="admin-count-all" class="ml-1 opacity-80">0</span></button>
+                        <button type="button" id="admin-filter-proc" onclick="setAdminFilter('proc')" class="px-4 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-slate-100">처리중 <span id="admin-count-proc" class="ml-1 opacity-80">0</span></button>
+                    </div>
                     <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm overflow-x-auto">
                         <table class="w-full text-sm admin-table min-w-[800px]">
                             <thead>
@@ -835,6 +839,7 @@
         const STATUS_PER_PAGE = 10;
         let adminPage = 1;
         const ADMIN_PER_PAGE = 10;
+        let adminFilter = 'all'; // 'all'(전체) | 'proc'(처리중만)
 
         // ── ★ 수정 2: 로그인 세션 유지 (sessionStorage 사용) ──
         // 페이지 로드 시 저장된 로그인 정보 복원
@@ -1063,7 +1068,7 @@
             localStorage.setItem('currentSection', id);
             if (id === 'report') updateLoginUI();
             if (id === 'status') { statusPage = 1; fetchPetitions(); }
-            if (id === 'admin') { adminPage = 1; switchAdminTab('petition'); fetchPetitions(); }
+            if (id === 'admin') { adminFilter = 'all'; adminPage = 1; switchAdminTab('petition'); fetchPetitions(); }
             if (id === 'board') { switchBoardTab('notice'); loadBoardData(); }
             setTimeout(refreshIcons, 10);
         }
@@ -1285,14 +1290,26 @@
         function renderAdminList() {
             const tbody = document.getElementById('admin-petition-list');
             tbody.innerHTML = '';
-            if (!petitions.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-slate-500 font-bold">접수된 민원이 없습니다.</td></tr>'; renderAdminPagination(0); return; }
-            const totalPages = Math.ceil(petitions.length / ADMIN_PER_PAGE);
+
+            // 최신순으로 정리하되 원래 번호(idx)를 같이 들고 있어요 → 필터를 걸어도 '답변/관리'가 정확한 민원을 열어요
+            const all = petitions.map((p, idx) => ({ p, idx })).reverse();
+            const procList = all.filter(x => getStatusBadge(x.p).label === '처리중');
+            updateAdminFilterTabs(all.length, procList.length);
+            const rows = adminFilter === 'proc' ? procList : all;
+
+            if (!rows.length) {
+                const msg = adminFilter === 'proc' ? '처리 중인 민원이 없습니다.' : '접수된 민원이 없습니다.';
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500 font-bold">${msg}</td></tr>`;
+                renderAdminPagination(0);
+                return;
+            }
+
+            const totalPages = Math.ceil(rows.length / ADMIN_PER_PAGE);
             if (adminPage > totalPages) adminPage = totalPages;
             if (adminPage < 1) adminPage = 1;
             const start = (adminPage - 1) * ADMIN_PER_PAGE;
 
-            [...petitions].reverse().slice(start, start + ADMIN_PER_PAGE).forEach((p, i) => {
-                const idx = petitions.length - 1 - (start + i);
+            rows.slice(start, start + ADMIN_PER_PAGE).forEach(({ p, idx }) => {
                 const badge = getStatusBadge(p);
                 const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
                 // 관리자용 배지 색상 매핑
@@ -1327,6 +1344,21 @@
             adminPage = n;
             renderAdminList();
             document.getElementById('sec-admin').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function setAdminFilter(f) {
+            adminFilter = f;
+            adminPage = 1;
+            renderAdminList();
+        }
+
+        function updateAdminFilterTabs(allCount, procCount) {
+            const on = 'px-4 py-2 rounded-full text-sm font-black bg-blue-700 text-white shadow-md';
+            const off = 'px-4 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-slate-100';
+            document.getElementById('admin-filter-all').className = adminFilter === 'all' ? on : off;
+            document.getElementById('admin-filter-proc').className = adminFilter === 'proc' ? on : off;
+            document.getElementById('admin-count-all').textContent = allCount;
+            document.getElementById('admin-count-proc').textContent = procCount;
         }
 
         function openAdminReplyModal(idx) {
