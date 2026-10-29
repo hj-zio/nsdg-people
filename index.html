@@ -527,6 +527,7 @@
                     <p class="text-slate-500 font-medium">실시간으로 접수된 민원의 처리 단계를 확인하실 수 있어요.</p>
                 </div>
                 <div id="petition-list" class="grid gap-6"></div>
+                <div id="petition-pagination" class="flex justify-center items-center gap-2 mt-8 flex-wrap"></div>
             </section>
 
             <!-- 관리자 -->
@@ -563,6 +564,7 @@
                             <tbody id="admin-petition-list"></tbody>
                         </table>
                     </div>
+                    <div id="admin-petition-pagination" class="flex justify-center items-center gap-2 mt-8 flex-wrap"></div>
                 </div>
                 <div id="admin-view-notice" class="hidden animate-fade">
                     <div class="flex justify-end mb-4">
@@ -829,6 +831,10 @@
         let currentEditingIndex = null;
         let currentUser = null; // { name, email, picture }
         let isAdminVerified = false;
+        let statusPage = 1;
+        const STATUS_PER_PAGE = 10;
+        let adminPage = 1;
+        const ADMIN_PER_PAGE = 10;
 
         // ── ★ 수정 2: 로그인 세션 유지 (sessionStorage 사용) ──
         // 페이지 로드 시 저장된 로그인 정보 복원
@@ -1056,8 +1062,8 @@
             document.getElementById('nav-' + id)?.classList.add('active', 'text-blue-700');
             localStorage.setItem('currentSection', id);
             if (id === 'report') updateLoginUI();
-            if (id === 'status') fetchPetitions();
-            if (id === 'admin') { switchAdminTab('petition'); fetchPetitions(); }
+            if (id === 'status') { statusPage = 1; fetchPetitions(); }
+            if (id === 'admin') { adminPage = 1; switchAdminTab('petition'); fetchPetitions(); }
             if (id === 'board') { switchBoardTab('notice'); loadBoardData(); }
             setTimeout(refreshIcons, 10);
         }
@@ -1187,9 +1193,14 @@
         function renderStatusList() {
             const list = document.getElementById('petition-list');
             list.innerHTML = '';
-            if (!petitions.length) { list.innerHTML = '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500 font-bold">접수된 민원이 없어요.</div>'; return; }
-            [...petitions].reverse().forEach((p, ri) => {
-                const idx = petitions.length - 1 - ri;
+            if (!petitions.length) { list.innerHTML = '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500 font-bold">접수된 민원이 없어요.</div>'; renderStatusPagination(0); return; }
+            const totalPages = Math.ceil(petitions.length / STATUS_PER_PAGE);
+            if (statusPage > totalPages) statusPage = totalPages;
+            if (statusPage < 1) statusPage = 1;
+            const start = (statusPage - 1) * STATUS_PER_PAGE;
+
+            [...petitions].reverse().slice(start, start + STATUS_PER_PAGE).forEach((p, i) => {
+                const idx = petitions.length - 1 - (start + i);
                 const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
                 const badge = getStatusBadge(p);
                 const item = document.createElement('div');
@@ -1198,7 +1209,30 @@
                 item.innerHTML = `<div class="flex flex-wrap items-center justify-between gap-4 mb-3"><div class="flex items-center gap-3"><span class="px-3 py-1 rounded-lg text-xs font-black ${badge.cls}">${badge.label}</span><span class="text-sm font-bold text-slate-400">${p.category}</span></div><span class="text-xs font-medium text-slate-400">${p.date}</span></div><h4 class="text-lg font-black text-slate-800 flex items-center gap-2">${isSecret ? '<i data-lucide="lock" class="w-4 h-4 text-slate-400"></i>' : ''} ${isSecret ? '비밀글로 보호된 민원이에요.' : p.title}</h4>`;
                 list.appendChild(item);
             });
+            renderStatusPagination(totalPages);
             refreshIcons();
+        }
+
+        function renderStatusPagination(totalPages) {
+            const box = document.getElementById('petition-pagination');
+            box.innerHTML = '';
+            if (totalPages <= 1) return;
+            for (let n = 1; n <= totalPages; n++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = n;
+                btn.className = n === statusPage
+                    ? 'w-10 h-10 rounded-xl font-black text-sm bg-blue-700 text-white shadow-md'
+                    : 'w-10 h-10 rounded-xl font-bold text-sm bg-white border border-slate-200 text-slate-600 hover:bg-slate-100';
+                btn.onclick = () => goStatusPage(n);
+                box.appendChild(btn);
+            }
+        }
+
+        function goStatusPage(n) {
+            statusPage = n;
+            renderStatusList();
+            document.getElementById('sec-status').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function openPetitionView(idx) {
@@ -1251,9 +1285,14 @@
         function renderAdminList() {
             const tbody = document.getElementById('admin-petition-list');
             tbody.innerHTML = '';
-            if (!petitions.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-slate-500 font-bold">접수된 민원이 없습니다.</td></tr>'; return; }
-            [...petitions].reverse().forEach((p, ri) => {
-                const idx = petitions.length - 1 - ri;
+            if (!petitions.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-slate-500 font-bold">접수된 민원이 없습니다.</td></tr>'; renderAdminPagination(0); return; }
+            const totalPages = Math.ceil(petitions.length / ADMIN_PER_PAGE);
+            if (adminPage > totalPages) adminPage = totalPages;
+            if (adminPage < 1) adminPage = 1;
+            const start = (adminPage - 1) * ADMIN_PER_PAGE;
+
+            [...petitions].reverse().slice(start, start + ADMIN_PER_PAGE).forEach((p, i) => {
+                const idx = petitions.length - 1 - (start + i);
                 const badge = getStatusBadge(p);
                 const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
                 // 관리자용 배지 색상 매핑
@@ -1264,7 +1303,30 @@
                 tr.innerHTML = `<td class="font-medium text-slate-500">${p.id}</td><td><span class="px-2 py-1 rounded-md text-xs font-bold ${adminBadgeCls}">${badge.label}</span></td><td class="font-bold text-slate-700">${p.category}</td><td><div class="font-black text-slate-900 truncate max-w-xs flex items-center gap-1">${isSecret ? '<i data-lucide="lock" class="w-3 h-3 text-slate-400"></i>' : ''} ${p.title}</div></td><td class="text-slate-500">${p.user}</td><td class="text-xs text-slate-400">${p.googleEmail || '-'}</td><td class="text-center"><button onclick="openAdminReplyModal(${idx})" class="bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-slate-700">답변/관리</button></td>`;
                 tbody.appendChild(tr);
             });
+            renderAdminPagination(totalPages);
             refreshIcons();
+        }
+
+        function renderAdminPagination(totalPages) {
+            const box = document.getElementById('admin-petition-pagination');
+            box.innerHTML = '';
+            if (totalPages <= 1) return;
+            for (let n = 1; n <= totalPages; n++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = n;
+                btn.className = n === adminPage
+                    ? 'w-10 h-10 rounded-xl font-black text-sm bg-blue-700 text-white shadow-md'
+                    : 'w-10 h-10 rounded-xl font-bold text-sm bg-white border border-slate-200 text-slate-600 hover:bg-slate-100';
+                btn.onclick = () => goAdminPage(n);
+                box.appendChild(btn);
+            }
+        }
+
+        function goAdminPage(n) {
+            adminPage = n;
+            renderAdminList();
+            document.getElementById('sec-admin').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function openAdminReplyModal(idx) {
