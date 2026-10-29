@@ -748,8 +748,9 @@
             </div>
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-t border-slate-100 pt-6">
                 <div class="space-y-1">
-                    <label class="text-[11px] font-black text-slate-400 uppercase">수동 상태 설정</label>
-                    <select id="admin-status-select" class="h-12 px-4 border border-slate-200 rounded-xl font-bold focus:border-blue-600 outline-none">
+                    <label class="text-[11px] font-black text-slate-400 uppercase">상태 안내</label>
+                    <p class="text-sm font-bold text-slate-600">답변을 저장하면 <span class="text-green-600">처리완료</span>, 비워서 저장하면 <span class="text-blue-600">처리중</span>으로 자동 표시돼요.</p>
+                    <select id="admin-status-select" class="hidden">
                         <option value="접수대기">접수대기</option>
                         <option value="처리중">처리중</option>
                         <option value="처리완료">처리완료</option>
@@ -819,7 +820,7 @@
 
     <script>
         // ════════════════════════════════════════════════════════
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOHT_T1p_eUYkxM0hV35QR2HHfawfOhnCPoBO7LzI6gv10iDZ8_umnyuXF7kZ8ywAt/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPyp2v6mpVPD0m0_oXbqHI-n_MhNL_ZYCYjAJVD1L5-QgbAySAG8oNiyP1F-_ECgA6/exec";
         const GOOGLE_CLIENT_ID = "83679331180-3hc98fjj22gemuhql55848fgamfvmg0o.apps.googleusercontent.com";
         const ALLOWED_DOMAIN = "pess.cnehs.kr";
         // ════════════════════════════════════════════════════════
@@ -1161,7 +1162,7 @@
                 password, title, content,
                 isSecret: document.getElementById('f-secret').checked,
                 // ★ 수정 3: 접수 시 상태를 '접수대기'로 고정
-                status: "접수대기",
+                status: "처리중",
                 date: (() => { const d = new Date(); const pad = n => String(n).padStart(2, '0'); return `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`; })(),
                 reply: ""
             };
@@ -1176,16 +1177,11 @@
 
         // ★ 수정 3: 처리현황 렌더링 - 상태값 기준으로 배지 표시
         function getStatusBadge(p) {
-            const status = p.status || '접수대기';
-            // status 필드 우선 사용, reply가 있으면 처리완료로 간주 (후방 호환)
-            if (status === '처리완료' || (p.reply && p.reply.trim() !== '' && status !== '접수대기' && status !== '처리중')) {
+            // 시트에 저장되면 처리중, 답변이 적히면 처리완료 (자동)
+            if (p.reply && p.reply.trim() !== '') {
                 return { label: '처리완료', cls: 'text-green-600 bg-green-50' };
             }
-            if (status === '처리중') {
-                return { label: '처리중', cls: 'text-blue-600 bg-blue-50' };
-            }
-            // 기본: 접수대기
-            return { label: '접수대기', cls: 'text-slate-500 bg-slate-100' };
+            return { label: '처리중', cls: 'text-blue-600 bg-blue-50' };
         }
 
         function renderStatusList() {
@@ -1282,7 +1278,7 @@
 
         async function saveAdminReply() {
             const reply = document.getElementById('admin-reply-content').value;
-            const status = document.getElementById('admin-status-select').value;
+            const status = reply.trim() !== '' ? '처리완료' : '처리중';
             const p = petitions[currentEditingIndex];
             const btn = document.getElementById('btn-save-admin');
             btn.disabled = true; btn.innerHTML = '<div class="spinner w-5 h-5"></div>';
