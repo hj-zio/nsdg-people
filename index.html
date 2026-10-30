@@ -526,6 +526,18 @@
                     <h2 class="text-3xl font-black text-slate-900 mb-2">처리 현황</h2>
                     <p class="text-slate-500 font-medium">실시간으로 접수된 민원의 처리 단계를 확인하실 수 있어요.</p>
                 </div>
+                <div class="relative mb-4">
+                    <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    <input id="status-search" type="text" autocomplete="off"
+                        placeholder="제목, 내용, 접수번호, 분류, 작성자로 검색"
+                        oninput="onStatusSearch(this.value)"
+                        class="w-full h-14 pl-14 pr-12 bg-white border border-slate-200 rounded-2xl font-bold outline-none">
+                    <button type="button" id="status-search-clear" onclick="clearStatusSearch()"
+                        class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <p id="status-search-result" class="hidden text-sm font-bold text-slate-500 mb-4 px-1"></p>
                 <div id="petition-list" class="grid gap-6"></div>
                 <div id="petition-pagination" class="flex justify-center items-center gap-2 mt-8 flex-wrap"></div>
             </section>
@@ -836,6 +848,7 @@
         let currentUser = null; // { name, email, picture }
         let isAdminVerified = false;
         let statusPage = 1;
+        let statusQuery = ''; // ★ 처리현황 검색어
         const STATUS_PER_PAGE = 8;
         let adminPage = 1;
         const ADMIN_PER_PAGE = 10;
@@ -1067,7 +1080,11 @@
             document.getElementById('nav-' + id)?.classList.add('active', 'text-blue-700');
             localStorage.setItem('currentSection', id);
             if (id === 'report') updateLoginUI();
-            if (id === 'status') { statusPage = 1; fetchPetitions(); }
+            if (id === 'status') {
+                statusPage = 1; statusQuery = '';
+                const si = document.getElementById('status-search'); if (si) si.value = '';
+                fetchPetitions();
+            }
             if (id === 'admin') { adminFilter = 'all'; adminPage = 1; switchAdminTab('petition'); fetchPetitions(); }
             if (id === 'board') { switchBoardTab('notice'); loadBoardData(); }
             setTimeout(refreshIcons, 10);
@@ -1195,17 +1212,48 @@
             return { label: '처리중', cls: 'text-blue-600 bg-blue-50' };
         }
 
+        // 처리현황 검색 필터 (비밀글은 제목/내용/작성자로 검색되지 않도록 제외)
+        function matchStatusQuery(p, q) {
+            const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
+            const fields = isSecret
+                ? [p.id, p.category]
+                : [p.id, p.category, p.title, p.content, p.user];
+            return fields.some(f => String(f || '').toLowerCase().includes(q));
+        }
+
         function renderStatusList() {
             const list = document.getElementById('petition-list');
             list.innerHTML = '';
-            if (!petitions.length) { list.innerHTML = '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500 font-bold">접수된 민원이 없어요.</div>'; renderStatusPagination(0); return; }
-            const totalPages = Math.ceil(petitions.length / STATUS_PER_PAGE);
+
+            const q = statusQuery.trim().toLowerCase();
+
+            // 최신순 + 원래 번호(idx) 유지 → 검색해도 정확한 민원이 열려요
+            let rows = petitions.map((p, idx) => ({ p, idx })).reverse();
+            if (q) rows = rows.filter(x => matchStatusQuery(x.p, q));
+
+            // 검색 결과 안내 + 지우기 버튼
+            const resultEl = document.getElementById('status-search-result');
+            const clearBtn = document.getElementById('status-search-clear');
+            if (clearBtn) clearBtn.classList.toggle('hidden', !q);
+            if (resultEl) {
+                resultEl.classList.toggle('hidden', !q);
+                resultEl.textContent = q ? `'${statusQuery.trim()}' 검색 결과 ${rows.length}건` : '';
+            }
+
+            if (!rows.length) {
+                const msg = q ? '검색 결과가 없어요.' : '접수된 민원이 없어요.';
+                list.innerHTML = `<div class="text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500 font-bold">${msg}</div>`;
+                renderStatusPagination(0);
+                refreshIcons();
+                return;
+            }
+
+            const totalPages = Math.ceil(rows.length / STATUS_PER_PAGE);
             if (statusPage > totalPages) statusPage = totalPages;
             if (statusPage < 1) statusPage = 1;
             const start = (statusPage - 1) * STATUS_PER_PAGE;
 
-            [...petitions].reverse().slice(start, start + STATUS_PER_PAGE).forEach((p, i) => {
-                const idx = petitions.length - 1 - (start + i);
+            rows.slice(start, start + STATUS_PER_PAGE).forEach(({ p, idx }) => {
                 const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
                 const badge = getStatusBadge(p);
                 const item = document.createElement('div');
@@ -1216,6 +1264,20 @@
             });
             renderStatusPagination(totalPages);
             refreshIcons();
+        }
+
+        function onStatusSearch(value) {
+            statusQuery = value;
+            statusPage = 1;
+            renderStatusList();
+        }
+
+        function clearStatusSearch() {
+            statusQuery = '';
+            statusPage = 1;
+            const input = document.getElementById('status-search');
+            if (input) { input.value = ''; input.focus(); }
+            renderStatusList();
         }
 
         function renderStatusPagination(totalPages) {
