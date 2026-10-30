@@ -539,12 +539,6 @@
                                 <i data-lucide="x" class="w-4 h-4"></i>
                             </button>
                         </div>
-                        <div class="flex justify-center md:justify-end mt-2">
-                            <button type="button" id="status-mine-btn" onclick="toggleMyPetitions()"
-                                class="px-3 py-1.5 rounded-full text-xs font-bold bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 flex items-center gap-1.5 transition-all">
-                                <i data-lucide="user-check" class="w-3.5 h-3.5"></i> 내 민원만 보기
-                            </button>
-                        </div>
                         <p id="status-search-result" class="hidden text-sm font-bold text-slate-500 mt-1.5 px-1 md:text-right"></p>
                     </div>
                 </div>
@@ -859,7 +853,6 @@
         let isAdminVerified = false;
         let statusPage = 1;
         let statusQuery = ''; // ★ 처리현황 검색어
-        let statusMineOnly = false; // ★ 내 민원만 보기
         const STATUS_PER_PAGE = 8;
         let adminPage = 1;
         const ADMIN_PER_PAGE = 10;
@@ -979,8 +972,6 @@
             }
             const overlay = document.getElementById('report-login-overlay');
             if (overlay) overlay.classList.toggle('hidden', loggedIn);
-            if (!loggedIn) statusMineOnly = false;
-            renderStatusList(); // 로그인 상태가 바뀌면 내 민원 표시도 갱신
         }
 
         // ── 관리자 권한 자동 확인 (userdb isAdmin=1) ─────────────
@@ -1094,7 +1085,7 @@
             localStorage.setItem('currentSection', id);
             if (id === 'report') updateLoginUI();
             if (id === 'status') {
-                statusPage = 1; statusQuery = ''; statusMineOnly = false;
+                statusPage = 1; statusQuery = '';
                 const si = document.getElementById('status-search'); if (si) si.value = '';
                 fetchPetitions();
             }
@@ -1226,20 +1217,8 @@
         }
 
         // 처리현황 검색 필터 (비밀글은 제목/내용/작성자로 검색되지 않도록 제외)
-        // 내가 쓴 민원인지 (학교 계정 기준)
-        function isMyPetition(p) {
-            return !!currentUser && !!p.googleEmail && p.googleEmail.toLowerCase() === currentUser.email.toLowerCase();
-        }
-
-        function toggleMyPetitions() {
-            if (!currentUser) return alert("로그인 후 내가 쓴 민원을 볼 수 있어요.");
-            statusMineOnly = !statusMineOnly;
-            statusPage = 1;
-            renderStatusList();
-        }
-
         function matchStatusQuery(p, q) {
-            const isSecret = (p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE') && !isMyPetition(p);
+            const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
             const fields = isSecret
                 ? [p.id, p.category]
                 : [p.id, p.category, p.title, p.content, p.user];
@@ -1254,14 +1233,7 @@
 
             // 최신순 + 원래 번호(idx) 유지 → 검색해도 정확한 민원이 열려요
             let rows = petitions.map((p, idx) => ({ p, idx })).reverse();
-            if (statusMineOnly) rows = rows.filter(x => isMyPetition(x.p));
             if (q) rows = rows.filter(x => matchStatusQuery(x.p, q));
-
-            // 내 민원 토글 버튼 모양
-            const mineBtn = document.getElementById('status-mine-btn');
-            if (mineBtn) mineBtn.className = statusMineOnly
-                ? 'px-3 py-1.5 rounded-full text-xs font-black bg-blue-700 text-white shadow-md flex items-center gap-1.5 transition-all'
-                : 'px-3 py-1.5 rounded-full text-xs font-bold bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 flex items-center gap-1.5 transition-all';
 
             // 검색 결과 안내 + 지우기 버튼
             const resultEl = document.getElementById('status-search-result');
@@ -1273,7 +1245,7 @@
             }
 
             if (!rows.length) {
-                const msg = q ? '검색 결과가 없어요.' : (statusMineOnly ? '내가 접수한 민원이 없어요.' : '접수된 민원이 없어요.');
+                const msg = q ? '검색 결과가 없어요.' : '접수된 민원이 없어요.';
                 list.innerHTML = `<div class="text-center py-12 bg-white rounded-2xl border border-slate-200 text-slate-500 font-bold">${msg}</div>`;
                 renderStatusPagination(0);
                 refreshIcons();
@@ -1286,7 +1258,7 @@
             const start = (statusPage - 1) * STATUS_PER_PAGE;
 
             rows.slice(start, start + STATUS_PER_PAGE).forEach(({ p, idx }) => {
-                const isSecret = (p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE') && !isMyPetition(p);
+                const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
                 const badge = getStatusBadge(p);
                 const item = document.createElement('div');
                 item.className = "bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-blue-400 hover:shadow-md transition-all";
@@ -1336,7 +1308,7 @@
 
         function openPetitionView(idx) {
             const p = petitions[idx];
-            const isSecret = (p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE') && !isMyPetition(p);
+            const isSecret = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
             if (isSecret) {
                 document.getElementById('current-secret-index').value = idx;
                 document.getElementById('secret-pw-input').value = '';
