@@ -522,22 +522,26 @@
 
             <!-- 처리현황 -->
             <section id="sec-status" class="hidden animate-fade py-12 px-4 max-w-5xl mx-auto">
-                <div class="mb-8 text-center md:text-left">
-                    <h2 class="text-3xl font-black text-slate-900 mb-2">처리 현황</h2>
-                    <p class="text-slate-500 font-medium">실시간으로 접수된 민원의 처리 단계를 확인하실 수 있어요.</p>
+                <div class="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4 text-center md:text-left">
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-900 mb-2">처리 현황</h2>
+                        <p class="text-slate-500 font-medium">실시간으로 접수된 민원의 처리 단계를 확인하실 수 있어요.</p>
+                    </div>
+                    <div class="w-full md:w-96 shrink-0">
+                        <div class="relative">
+                            <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                            <input id="status-search" type="text" autocomplete="off"
+                                placeholder="제목, 내용, 접수번호, 분류, 작성자로 검색"
+                                oninput="onStatusSearch(this.value)"
+                                class="w-full h-12 pl-11 pr-10 bg-white border border-slate-200 rounded-xl font-bold outline-none">
+                            <button type="button" id="status-search-clear" onclick="clearStatusSearch()"
+                                class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <p id="status-search-result" class="hidden text-sm font-bold text-slate-500 mt-1.5 px-1 md:text-right"></p>
+                    </div>
                 </div>
-                <div class="relative mb-4">
-                    <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                    <input id="status-search" type="text" autocomplete="off"
-                        placeholder="제목, 내용, 접수번호, 분류, 작성자로 검색"
-                        oninput="onStatusSearch(this.value)"
-                        class="w-full h-14 pl-14 pr-12 bg-white border border-slate-200 rounded-2xl font-bold outline-none">
-                    <button type="button" id="status-search-clear" onclick="clearStatusSearch()"
-                        class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-                </div>
-                <p id="status-search-result" class="hidden text-sm font-bold text-slate-500 mb-4 px-1"></p>
                 <div id="petition-list" class="grid gap-6"></div>
                 <div id="petition-pagination" class="flex justify-center items-center gap-2 mt-8 flex-wrap"></div>
             </section>
