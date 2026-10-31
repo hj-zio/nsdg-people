@@ -650,9 +650,6 @@
         </footer>
     </div>
 
-    <!-- 10월 31일에만 구석에 뜨는 제작자 표시 -->
-    <div id="creator-badge" class="hidden fixed bottom-4 right-4 z-30 bg-white/90 backdrop-blur border border-slate-200 text-slate-500 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm cursor-pointer select-none" onclick="this.classList.add('hidden')" title="누르면 사라져요">Made by <span id="creator-name"></span></div>
-
     <!-- ★ 수정 1: 이용약관 모달 (신규 추가) -->
     <div id="terms-modal" class="hidden fixed inset-0 bg-slate-900/70 z-[130] flex items-center justify-center p-4 animate-fade">
         <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl relative flex flex-col max-h-[85vh]">
@@ -895,7 +892,6 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9WJXAA-XRGVIdENPc5IrZx-xPyrLo_eF2CEngydNdE-HeU8izHbncbPM6X5-8sXhJ/exec";
         const GOOGLE_CLIENT_ID = "83679331180-3hc98fjj22gemuhql55848fgamfvmg0o.apps.googleusercontent.com";
         const ALLOWED_DOMAIN = "pess.cnehs.kr";
-        const CREATOR_NAME = "이시율, 조형준"; // ★ 10월 31일에 표시될 제작자 이름 (직접 바꿔주세요)
         // ════════════════════════════════════════════════════════
 
         let petitions = [], boardNotices = [], boardQnAs = [];
@@ -1460,14 +1456,6 @@
             btn.disabled = false; btn.innerHTML = '<i data-lucide="save" class="w-5 h-5"></i> 수정 저장'; refreshIcons();
         }
 
-        // ── 10월 31일에만 제작자 이름을 구석에 표시 ──
-        function showCreatorOnOct31() {
-            const d = new Date();
-            if (d.getMonth() !== 9 || d.getDate() !== 31) return;
-            document.getElementById('creator-name').textContent = CREATOR_NAME;
-            document.getElementById('creator-badge').classList.remove('hidden');
-        }
-
         function switchAdminTab(tab) {
             ['petition', 'notice', 'qna'].forEach(t => {
                 document.getElementById(`admin-tab-${t}`).className = t === tab ? 'admin-sub-tab active' : 'admin-sub-tab inactive';
@@ -1712,8 +1700,6 @@
             updateLoginUI();
             if (currentUser) verifyAdminAccess();
             showSection(localStorage.getItem('currentSection') || 'home');
-
-            showCreatorOnOct31();
 
             // ESC로 학생용 창 닫기 (수정 화면은 작성 중 내용이 날아가지 않도록 제외)
             document.addEventListener('keydown', e => {
