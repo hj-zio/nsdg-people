@@ -740,6 +740,53 @@
                     <div id="sv-reply-content" class="p-6 bg-blue-50/50 border border-blue-100 rounded-2xl text-blue-950 text-base leading-relaxed whitespace-pre-line font-semibold min-h-[80px]"></div>
                 </div>
             </div>
+            <div id="sv-edit-wrap" class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between gap-3">
+                <p id="sv-edit-note" class="text-xs font-medium text-slate-400"></p>
+                <button type="button" id="sv-edit-btn" onclick="openEditModal()" class="shrink-0 bg-slate-100 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all flex items-center gap-2"><i data-lucide="pencil" class="w-4 h-4"></i> 민원 수정</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 민원 수정 모달 (비밀번호 확인 → 수정 화면) -->
+    <div id="edit-modal" class="hidden fixed inset-0 bg-slate-900/80 z-[125] flex items-center justify-center p-4 animate-fade">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('edit-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div id="edit-step-pw" class="p-8 text-center">
+                <div class="w-16 h-16 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-5 border-4 border-blue-50">
+                    <i data-lucide="pencil" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-2xl font-black text-slate-900 mb-2">민원 수정</h3>
+                <p class="text-sm text-slate-500 mb-7 leading-relaxed font-medium">민원 작성 시 입력했던<br><strong class="text-slate-900">숫자 4자리 비밀번호</strong>를 입력해야 수정할 수 있어요.</p>
+                <input type="password" id="edit-pw-input" maxlength="4" pattern="\d*" inputmode="numeric" class="w-full h-16 px-6 bg-slate-50 border-2 border-slate-200 rounded-2xl font-black outline-none text-center mb-5 focus:border-blue-600 transition-colors tracking-[0.6em] text-3xl" placeholder="••••" onkeypress="if(event.key === 'Enter') checkEditPassword()">
+                <button onclick="checkEditPassword()" class="w-full bg-blue-700 text-white h-14 rounded-2xl font-black text-lg hover:bg-blue-800 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-2">확인 <i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+            </div>
+            <div id="edit-step-form" class="hidden p-8 space-y-5">
+                <h3 class="text-2xl font-black text-slate-900">민원 수정</h3>
+                <div class="space-y-2">
+                    <label class="text-[11px] font-black text-slate-400 uppercase">민원 분류</label>
+                    <select id="edit-category" class="w-full h-12 px-4 bg-slate-50 border border-slate-100 rounded-xl font-bold outline-none">
+                        <option value="규정">교내 생활 규정 건의</option>
+                        <option value="급식">급식 및 메뉴 건의</option>
+                        <option value="기타">기타 불편 사항</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[11px] font-black text-slate-400 uppercase">민원 제목</label>
+                    <input id="edit-title" type="text" class="w-full h-12 px-4 bg-slate-50 border border-slate-100 rounded-xl font-bold outline-none">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[11px] font-black text-slate-400 uppercase">상세 내용</label>
+                    <textarea id="edit-content" rows="6" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl font-bold outline-none resize-none leading-relaxed"></textarea>
+                </div>
+                <label class="flex items-center gap-3 p-4 bg-slate-50 border border-slate-100 rounded-xl cursor-pointer">
+                    <input type="checkbox" id="edit-secret" class="w-5 h-5 rounded border-slate-300 text-blue-700">
+                    <span class="text-sm font-bold text-slate-700 flex items-center gap-2"><i data-lucide="lock" class="w-4 h-4 text-slate-500"></i> 비밀글 설정 (내용 비공개 처리)</span>
+                </label>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeModal('edit-modal')" class="flex-1 bg-slate-100 text-slate-600 h-14 rounded-2xl font-black hover:bg-slate-200 transition-all">취소</button>
+                    <button type="button" id="btn-save-edit" onclick="saveEditedPetition()" class="flex-[2] bg-blue-700 text-white h-14 rounded-2xl font-black hover:bg-blue-800 transition-all flex items-center justify-center gap-2"><i data-lucide="save" class="w-5 h-5"></i> 수정 저장</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -853,6 +900,8 @@
         let isAdminVerified = false;
         let statusPage = 1;
         let statusQuery = ''; // ★ 처리현황 검색어
+        let viewingPetition = null; // ★ 상세 모달에 열려 있는 민원
+        let editVerifiedPw = '';    // ★ 수정 시 확인된 비밀번호
         const STATUS_PER_PAGE = 8;
         let adminPage = 1;
         const ADMIN_PER_PAGE = 10;
@@ -1332,6 +1381,12 @@
             document.getElementById('sv-date').innerText = `${p.id} · 작성자 ${p.user} · ${p.date}`;
             document.getElementById('sv-title').innerText = p.title;
             document.getElementById('sv-content').innerText = p.content;
+            viewingPetition = p;
+            const hasReply = !!(p.reply && p.reply.trim());
+            document.getElementById('sv-edit-btn').classList.toggle('hidden', hasReply);
+            document.getElementById('sv-edit-note').innerText = hasReply
+                ? '답변이 등록된 민원은 수정할 수 없어요.'
+                : '수정하려면 접수 시 입력한 비밀번호가 필요해요.';
             const replyEl = document.getElementById('sv-reply-content');
             if (p.reply && p.reply.trim()) {
                 replyEl.innerText = p.reply;
@@ -1341,6 +1396,64 @@
                 replyEl.className = "p-6 bg-slate-50 border border-slate-200 rounded-2xl text-slate-500 text-base leading-relaxed whitespace-pre-line font-medium min-h-[80px]";
             }
             document.getElementById('student-view-modal').classList.remove('hidden');
+        }
+
+        // ── 민원 수정 (비밀번호 확인 후) ─────────────────────
+        function normPw(v) {
+            const s = String(v == null ? '' : v).trim();
+            return /^\d{1,4}$/.test(s) ? s.padStart(4, '0') : s; // 시트가 0123을 123으로 저장해도 비교되게
+        }
+
+        function openEditModal() {
+            const p = viewingPetition;
+            if (!p) return;
+            if (p.reply && p.reply.trim()) return alert("답변이 등록된 민원은 수정할 수 없어요.");
+            document.getElementById('edit-pw-input').value = '';
+            document.getElementById('edit-step-pw').classList.remove('hidden');
+            document.getElementById('edit-step-form').classList.add('hidden');
+            document.getElementById('edit-modal').classList.remove('hidden');
+            refreshIcons();
+            setTimeout(() => document.getElementById('edit-pw-input').focus(), 100);
+        }
+
+        function checkEditPassword() {
+            const p = viewingPetition;
+            const input = document.getElementById('edit-pw-input').value;
+            if (input.length !== 4 || isNaN(input)) return alert("비밀번호는 숫자 4자리로 입력해주세요.");
+            if (normPw(input) !== normPw(p.password)) return alert("비밀번호가 일치하지 않아요.");
+            editVerifiedPw = input;
+            document.getElementById('edit-category').value = p.category;
+            document.getElementById('edit-title').value = p.title;
+            document.getElementById('edit-content').value = p.content;
+            document.getElementById('edit-secret').checked = p.isSecret === true || String(p.isSecret).toUpperCase() === 'TRUE';
+            document.getElementById('edit-step-pw').classList.add('hidden');
+            document.getElementById('edit-step-form').classList.remove('hidden');
+            refreshIcons();
+        }
+
+        async function saveEditedPetition() {
+            const p = viewingPetition;
+            if (!p) return;
+            const category = document.getElementById('edit-category').value;
+            const title = document.getElementById('edit-title').value.trim();
+            const content = document.getElementById('edit-content').value.trim();
+            const isSecret = document.getElementById('edit-secret').checked;
+            if (!title || !content) return alert("제목과 내용을 입력해주세요.");
+            const btn = document.getElementById('btn-save-edit');
+            btn.disabled = true; btn.innerHTML = '<div class="spinner w-5 h-5"></div>';
+            try {
+                const res = await fetch(SCRIPT_URL + "?" + new URLSearchParams({ action: "editPetition", id: p.id, password: editVerifiedPw, category, title, content, isSecret }).toString());
+                const result = await res.json();
+                if (!result.success) throw new Error(result.error || '');
+                p.category = category; p.title = title; p.content = content; p.isSecret = isSecret;
+                closeModal('edit-modal');
+                showStudentModal(p);
+                renderStatusList();
+                alert("민원이 수정되었어요.");
+            } catch (err) {
+                alert("수정에 실패했어요." + (err && err.message ? "\n" + err.message : ""));
+            }
+            btn.disabled = false; btn.innerHTML = '<i data-lucide="save" class="w-5 h-5"></i> 수정 저장'; refreshIcons();
         }
 
         function switchAdminTab(tab) {
