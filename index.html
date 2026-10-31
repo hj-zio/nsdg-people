@@ -1700,6 +1700,19 @@
             updateLoginUI();
             if (currentUser) verifyAdminAccess();
             showSection(localStorage.getItem('currentSection') || 'home');
+
+            // ESC로 학생용 창 닫기 (수정 화면은 작성 중 내용이 날아가지 않도록 제외)
+            document.addEventListener('keydown', e => {
+                if (e.key !== 'Escape') return;
+                const isOpen = id => { const m = document.getElementById(id); return m && !m.classList.contains('hidden'); };
+                if (isOpen('terms-modal')) return closeModal('terms-modal');
+                if (isOpen('edit-modal')) {
+                    if (!document.getElementById('edit-step-form').classList.contains('hidden')) return;
+                    return closeModal('edit-modal');
+                }
+                if (isOpen('secret-check-modal')) return closeModal('secret-check-modal');
+                if (isOpen('student-view-modal')) return closeModal('student-view-modal');
+            });
         });
     </script>
 </body>
